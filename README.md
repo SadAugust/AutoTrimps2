@@ -6,7 +6,7 @@ Discord is a chat program. Come to talk about AutoTrimps, for help, or suggestio
 # AutoTrimps
 
 ## Current Version - Ongoing Development!
-- Zek Fork. All changes made by Zek using GenBTC as base. Currently up-to-date as of 06/2020.
+- Zek Fork. All changes made by SadAugust using GenBTC as base. Currently up-to-date as of 06/2020.
 
 ## Script Installation
 
@@ -16,7 +16,7 @@ https://www.tampermonkey.net/
 
 Step 2: 
 
-Click this link: https://github.com/Zorn192/AutoTrimps/raw/gh-pages/.user.js
+Click this link: https://github.com/SadAugust/AutoTrimps/raw/gh-pages/.user.js
 
 Step 3: 
 
