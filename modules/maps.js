@@ -778,7 +778,6 @@ var RAMPmapbought3 = false;
 var RAMPmapbought4 = false;
 var RAMPmapbought5 = false;
 var RAMPfragmappybought = false;
-var RAMPdone = false;
 var RAMPfragfarming = false;
 var Rshouldmayhem = 0;
 var Rmayhemextraglobal = -1;
@@ -1022,27 +1021,29 @@ function RautoMap() {
 		var tributefarm;
 		var metsfarmvalue;
 		if (game.global.challengeActive == "Daily") {
-				tributefarmcell = ((getPageSetting('Rdtributefarmcell') > 0) ? getPageSetting('Rdtributefarmcell') : 1);
+				tributefarmcell = ((getPageSetting('Rdtributefarmcell') > 0) ? getPageSetting('Rdtributefarmcell') : 81);
 				tributefarm = getPageSetting('Rdtributefarm')
 				var tributefarmzone = getPageSetting('Rdtributefarmzone')
 				var tributefarmvalue = getPageSetting('Rdtributefarmvalue')
 				var metsfarmvalue = getPageSetting('Rdtributefarmmets')
+				var tribmaplevel = getPageSetting('Rdtributemaplevel');
 		}   else {
-				tributefarmcell = ((getPageSetting('Rtributefarmcell') > 0) ? getPageSetting('Rtributefarmcell') : 1);
+				tributefarmcell = ((getPageSetting('Rtributefarmcell') > 0) ? getPageSetting('Rtributefarmcell') : 81);
 				tributefarm = getPageSetting('Rtributefarm')
 				var tributefarmzone = getPageSetting('Rtributefarmzone')
 				var tributefarmvalue = getPageSetting('Rtributefarmvalue')
 				var metsfarmvalue = getPageSetting('Rtributefarmmets')
+				var tribmaplevel = getPageSetting('Rtributemaplevel');
 		}
 		
 		Rtributefarm = (tributefarm == true && ((tributefarmcell <= 1) || (tributefarmcell > 1 && (game.global.lastClearedCell + 1) >= tributefarmcell)) && game.global.world > 5 && (tributefarmzone[0] > 0 && (tributefarmvalue[0] > 0 || metsfarmvalue [0] > 0)));
 		if (Rtributefarm) {
 			var tributes = game.buildings.Tribute.owned
 			var mets = game.jobs.Meteorologist.owned
-
 			var tributefarmindex = tributefarmzone.indexOf(game.global.world);
 			var tributezones = tributefarmvalue[tributefarmindex];
 			var metzones = metsfarmvalue[tributefarmindex];
+			
 			if (game.global.highestRadonLevelCleared > 83) {
 				var tribspecial = "lsc";
 			} else {
@@ -1051,6 +1052,7 @@ function RautoMap() {
 
 			if (tributefarmzone.includes(game.global.world) && (tributezones > tributes || metzones > mets)) {
 				Rshouldtributefarm = true;
+				var levelzones = tribmaplevel[tributefarmindex];
 				Tributefarmmap = game.global.mapsOwnedArray[game.global.mapsOwnedArray.length - 1].id;
 			}
 			
@@ -1059,13 +1061,6 @@ function RautoMap() {
 				recycleMap(getMapIndex(Tributefarmmap));
 				Tributefarmmap = undefined;
 			}
-
-			if (game.global.challengeActive == "Daily") {
-					var tribmaplevel = getPageSetting('Rdtributemaplevel');
-			} else {
-					var tribmaplevel = getPageSetting('Rtributemaplevel');
-			}
-					var levelzones = tribmaplevel[tributefarmindex];
 		}
 	}
 	
@@ -1074,15 +1069,19 @@ function RautoMap() {
 		var timefarmcell;
 		var timefarm;
 		if (game.global.challengeActive == "Daily") {
-			timefarmcell = ((getPageSetting('Rdtimefarmcell') > 0) ? getPageSetting('Rdtimefarmcell') : 1);
+			timefarmcell = ((getPageSetting('Rdtimefarmcell') > 0) ? getPageSetting('Rdtimefarmcell') : 71);
 			timefarm = getPageSetting('Rdtimefarm')
 			var timefarmzone = getPageSetting('Rdtimefarmzone')
 			var timefarmtime = getPageSetting('Rdtimefarmtime')
+			var timemaplevel = getPageSetting('Rdtimemaplevel');
+			var rtimespecial = autoTrimpSettings.Rdtimespecialselection.selected;
 		} else {
-			timefarmcell = ((getPageSetting('Rtimefarmcell') > 0) ? getPageSetting('Rtimefarmcell') : 1);
+			timefarmcell = ((getPageSetting('Rtimefarmcell') > 0) ? getPageSetting('Rtimefarmcell') : 71);
 			timefarm = getPageSetting('Rtimefarm')
 			var timefarmzone = getPageSetting('Rtimefarmzone')
 			var timefarmtime = getPageSetting('Rtimefarmtime')
+			var timemaplevel = getPageSetting('Rtimemaplevel');
+			var rtimespecial = autoTrimpSettings.Rtimespecialselection.selected;
 		}
 		Rtimefarm = (timefarm == true && ((timefarmcell <= 1) || (timefarmcell > 1 && (game.global.lastClearedCell + 1) >= timefarmcell)) && game.global.world > 5 && (timefarmzone[0] > 0 && timefarmtime[0] > 0));
 		if (Rtimefarm && (game.stats.zonesCleared.value != Rzonecleared)) {
@@ -1102,15 +1101,7 @@ function RautoMap() {
 					Rzonecleared=game.stats.zonesCleared.value;
 				}
 				Rshouldtimefarm = true;
-
-				if (game.global.challengeActive == "Daily") {
-					var timemaplevel = getPageSetting('Rdtimemaplevel');
-					var rtimespecial = autoTrimpSettings.Rdtimespecialselection.selected;
-				} else {
-					var timemaplevel = getPageSetting('Rtimemaplevel');
-					var rtimespecial = autoTrimpSettings.Rtimespecialselection.selected;
-				}
-					var levelzones = timemaplevel[timefarmindex];
+				var levelzones = timemaplevel[timefarmindex];
 			}
 		}
 	}
@@ -1146,7 +1137,22 @@ function RautoMap() {
 				Rshoulddopraid = true;
 			}
 		}
-		if (!Rshoulddopraid) {
+		if (!Rshoulddopraid && (RAMPrepMap1 != undefined || RAMPrepMap2 != undefined || RAMPrepMap3 != undefined || RAMPrepMap4 != undefined || RAMPrepMap5 != undefined)) {
+			
+			RAMPpMap1 = undefined;
+			RAMPpMap2 = undefined;
+			RAMPpMap3 = undefined;
+			RAMPpMap4 = undefined;
+			RAMPpMap5 = undefined;
+			RAMPfragmappy = undefined;
+			RAMPprefragmappy = undefined;
+			RAMPmapbought1 = false;
+			RAMPmapbought2 = false;
+			RAMPmapbought3 = false;
+			RAMPmapbought4 = false;
+			RAMPmapbought5 = false;
+			RAMPfragmappybought = false;
+			
 			if (RAMPrepMap1 != undefined) {
 				if (praidrecycle == true) {
 					recycleMap(getMapIndex(RAMPrepMap1));
@@ -1177,29 +1183,6 @@ function RautoMap() {
 				}
 				RAMPrepMap5 = undefined;
 			}
-			if (RAMPrepMap1 == undefined && RAMPrepMap2 == undefined && RAMPrepMap3 == undefined && RAMPrepMap4 == undefined && RAMPrepMap5 == undefined) {
-				RAMPdone = false;
-			}
-
-			RAMPdone = false;
-			RAMPpMap1 = undefined;
-			RAMPpMap2 = undefined;
-			RAMPpMap3 = undefined;
-			RAMPpMap4 = undefined;
-			RAMPpMap5 = undefined;
-			RAMPfragmappy = undefined;
-			RAMPrepMap1 = undefined;
-			RAMPrepMap2 = undefined;
-			RAMPrepMap3 = undefined;
-			RAMPrepMap4 = undefined;
-			RAMPrepMap5 = undefined;
-			RAMPprefragmappy = undefined;
-			RAMPmapbought1 = false;
-			RAMPmapbought2 = false;
-			RAMPmapbought3 = false;
-			RAMPmapbought4 = false;
-			RAMPmapbought5 = false;
-			RAMPfragmappybought = false;
 		}
 	}
 
@@ -1896,7 +1879,6 @@ function RautoMap() {
 		if (selectedMap == "world") {
 			mapsClicked();
 		} else if (selectedMap == "createp") {
-			RAMPdone = false;
 			var RAMPfragcheck = true;
 			if (praidfrag > 0) {
 				if (RAMPfrag() == true) {
