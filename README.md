@@ -1,4 +1,4 @@
-# AutoTrimps - Zek Fork
+# AutoTrimps - SadAugust Fork
 
 ## Discussion / Discord Channel
 <a href="https://discord.gg/Ztcnfjr"><img src="https://png.icons8.com/color/180/discord-new-logo.png" width=48></a>
@@ -6,7 +6,7 @@ Discord is a chat program. Come to talk about AutoTrimps, for help, or suggestio
 # AutoTrimps
 
 ## Current Version - Ongoing Development!
-- Zek Fork. All changes made by SadAugust using GenBTC as base. Currently up-to-date as of 06/2020.
+- SadAugust Fork. All changes made by SadAugust using GenBTC as base. Currently up-to-date as of 03/2021.
 
 ## Script Installation
 
