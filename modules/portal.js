@@ -350,6 +350,7 @@ function RautoPortal() {
 	case "Archaeology":
 	case "Insanity":
 	case "Nurture":
+	case "Alchemy":
             if (!game.global.challengeActive) {
                 RdoPortal(autoTrimpSettings.RAutoPortal.selected);
             }
