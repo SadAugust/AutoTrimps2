@@ -568,6 +568,7 @@ function Rresetmapvars() {
 	RmapTimeEstimate = 0;
 	RlastMapWeWereIn = null;
 	RdoMaxMapBonus = !1;
+	RdodMaxMapBonus = !1;
 	RvanillaMapatZone = !1;
 	Rtimefarm = !1;
 	RadditionalCritMulti = 2 < getPlayerCritChance() ? 25 : 5;
