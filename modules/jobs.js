@@ -389,16 +389,24 @@ function RquestbuyJobs() {
 	scientistNumber = 1;
     }
 	
-    if (game.global.challengeActive == 'Quest' && game.global.mapsUnlocked) {
-		if ((questcheck() == 10 && !canAffordBuilding('Smithy')) || questcheck() == 6) {
-			farmerRatio = 10;
-			lumberjackRatio = 10;
-			minerRatio = 10;
-		}
-		if (questcheck() == 1) farmerRatio = 10;
-		if (questcheck() == 2) lumberjackRatio = 10;
-		if (questcheck() == 3 || questcheck() == 7) minerRatio = 10;
-		if (questcheck() == 5) scientistNumber = (totalDistributableWorkers * 0.5);
+    if (game.global.world > 5) {
+	if (questcheck() == 7 && !canAffordBuilding('Smithy')) {
+	    farmerRatio = 10;
+	    lumberjackRatio = 10;
+	    minerRatio = 10;
+	}
+	if (questcheck() == 10 || questcheck() == 20) {
+            farmerRatio = 10;
+        }
+        if (questcheck() == 11 || questcheck() == 21) {
+            lumberjackRatio = 10;
+        }
+        if (questcheck() == 12 || questcheck() == 22) {
+            minerRatio = 10;
+        }
+	if (questcheck() == 14 || questcheck() == 24) {
+	    scientistNumber = (totalDistributableWorkers * 0.5);
+	}
     }
 
     freeWorkers = Math.ceil(game.resources.trimps.realMax() / 2) - game.resources.trimps.employed;
@@ -535,9 +543,9 @@ function RbuyJobs() {
 
 	// Calculate how much of each worker we should have
 	if (game.global.StaffEquipped.rarity >= 10 && getPageSetting("NoFarmersAbove") == true && (game.global.world >= getPageSetting("NoFarmerZone"))) {
-		var desiredRatios = [0,30,30,1];
+		var desiredRatios = [0,30,30,0];
 	} else if (game.global.StaffEquipped.rarity >= 10) {
-		var desiredRatios = [30,30,30,1];
+		var desiredRatios = [30,30,30,0];
 	} else {
 		var desiredRatios = [0,0,0,0];
 	}
@@ -545,39 +553,30 @@ function RbuyJobs() {
 	// If focused farming go all in for caches
 	var allIn = "";
 
-	if ((Rshouldtimefarm || Rshouldalchfarm) && game.global.mapsActive) {
-		if (Rshouldalchfarm) {
-			rspecial = autoTrimpSettings.RAlchSpecial.selected;
-		} else if (game.global.challengeAcive = "Daily" && Rshouldtimefarm && getPageSetting(Rdtimefarm)) {
-			rspecial = autoTrimpSettings.Rdtimespecialselection.selected;
-		} else if (Rshouldtimefarm) {
-			rspecial = autoTrimpSettings.Rtimespecialselection.selected;
+	if (Rshouldtimefarm) {
+		if (game.global.challengeAcive = "Daily") {
+			var rtimespecial = autoTrimpSettings.Rdtimespecialselection.selected;
+		} else {
+			var rtimespecial = autoTrimpSettings.Rtimespecialselection.selected;
 		}
-		
-		if (rspecial.includes('mc')) {
-			allIn = "Miner";
-		} else if (rspecial.includes('sc')) {
-			allIn = "Farmer";
-		} else if (rspecial.includes('wc')) {
-			allIn = "Lumberjack";
-		} else if (rspecial.includes('rc')) {
-			allIn = "Scientist";
-		} else if (rspecial.includes('hc')) {
-			allIn = "Farmer"
-			var desiredRatios = [100,100,100,0];
-		}
-	} 
-	
-	if ((Rshouldshipfarm || Rshouldtributefarm) && (!Rshouldtimefarm && !Rshouldalchfarm)) {
+	}
+
+	if (Rshouldtimefarm && rtimespecial.includes('wc')) {
+		allIn = "Lumberjack";
+	} else if (Rshouldtimefarm && rtimespecial.includes('sc')) {
+		allIn = "Farmer";
+	} else if (Rshouldtimefarm && rtimespecial.includes('mc')) {
+		allIn = "Miner";
+	} else if (Rshouldtimefarm && rtimespecial.includes('rc')) {
+		allIn = "Scientist";
+	} else if (Rshouldtimefarm && rtimespecial.includes('hc')) {
+		allIn = "Farmer"
+		var desiredRatios = [100,100,100,0];
+	}
+
+	if (Rshouldshipfarm || Rshouldtributefarm) {
 		allIn = "Farmer";
 		var desiredRatios = [0,1,1,0];
-	}
-	
-	if (game.global.challengeActive == "Pandemonium" && getPageSetting('RPandemoniumAutoEquip') > 1 && getPageSetting('RPandemoniumAEStaff') != "undefined" && getPageSetting('RPandemoniumAEZone') > 0 && game.global.lastClearedCell > 59) {
-		if (game.global.world >= getPageSetting('RPandemoniumAEZone')) {
-			var desiredRatios = [0.1,0.1,0.1,0.01];
-			allIn = "Miner";
-		}
 	}
 
 	if (allIn != "") {

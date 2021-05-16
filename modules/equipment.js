@@ -493,12 +493,12 @@ function RequipEffect(gameResource, equip) {
 }
 
 function RequipCost(gameResource, equip) {
-	var price = parseFloat(getBuildingItemPrice(gameResource, equip.Resource, equip.Equip, 1));
-	if (equip.Equip)
-		price = Math.ceil(price * (Math.pow(1 - game.portal.Artisanistry.modifier, game.portal.Artisanistry.radLevel)));
-		price *= autoBattle.oneTimers.Artisan.owned ? autoBattle.oneTimers.Artisan.getMult() : 1;
-		if (game.global.challengeActive == "Pandemonium") price *= game.challenges.Pandemonium.getEnemyMult();
-	return price;
+    var price = parseFloat(getBuildingItemPrice(gameResource, equip.Resource, equip.Equip, 1));
+    if (equip.Equip)
+        price = Math.ceil(price * (Math.pow(1 - game.portal.Artisanistry.modifier, game.portal.Artisanistry.radLevel)));
+    /*else
+        price = Math.ceil(price * (Math.pow(1 - game.portal.Resourceful.modifier, game.portal.Resourceful.radLevel)));*/
+    return price;
 }
 
 function RPrestigeValue(what) {
@@ -754,7 +754,6 @@ function Rgetequips(map, special) { //(level, p b or false)
         if (special.locked) continue;
         if (game.global.universe == 2 && special.blockU2) continue;
         if (game.global.universe == 1 && special.blockU1) continue;
-		if (game.global.challengeActive == "Pandemonium" && upgradeToUnlock.prestige && game.challenges.Pandemonium.isEquipBlocked(game.upgrades[toUnlock[x]].prestiges)) continue;	
         if (special.brokenPlanet && ((special.brokenPlanet == 1 && !game.global.brokenPlanet) || special.brokenPlanet == -1 && game.global.brokenPlanet)) continue;
         if (special.startAt < 0) continue;
         if (special.lastAt < game.global.world) continue;
@@ -846,12 +845,10 @@ function mostEfficientEquipment(fakeLevels = {}) {
     ];
 
     var artBoost = Math.pow(1 - game.portal.Artisanistry.modifier, game.portal.Artisanistry.radLevel);
-	artBoost *= autoBattle.oneTimers.Artisan.owned ? autoBattle.oneTimers.Artisan.getMult() : 1;
-	if (game.global.challengeActive == "Pandemonium") artBoost *= game.challenges.Pandemonium.getEnemyMult();
-	
+
     for (var i in RequipmentList) {
         var nextLevelCost = game.equipment[i].cost[RequipmentList[i].Resource][0] * Math.pow(game.equipment[i].cost[RequipmentList[i].Resource][1], game.equipment[i].level + fakeLevels[i]) * artBoost;
-		if (game.global.challengeActive == "Pandemonium" && game.challenges.Pandemonium.isEquipBlocked(i)) continue;
+
         var nextLevelValue = game.equipment[i][RequipmentList[i].Stat + "Calculated"];
 
         var isAttack = (RequipmentList[i].Stat === 'attack' ? 0 : 1);
@@ -911,16 +908,13 @@ function getMaxAffordable(baseCost, totalResource, costScaling, isCompounding) {
 }
 
 function buyPrestigeMaybe(equipName) {
-	
-	if (game.global.challengeActive == "Pandemonium" && game.challenges.Pandemonium.isEquipBlocked(equipName)) return false;
+
     var equipment = game.equipment[equipName];
     var resource = (equipName == "Shield") ? 'wood' : 'metal'
     var equipStat = (typeof equipment.attack !== 'undefined') ? 'attack' : 'health';
 
     var artBoost = Math.pow(1 - game.portal.Artisanistry.modifier, game.portal.Artisanistry.radLevel);
-	artBoost *= autoBattle.oneTimers.Artisan.owned ? autoBattle.oneTimers.Artisan.getMult() : 1;
-	if (game.global.challengeActive == "Pandemonium") artBoost *= game.challenges.Pandemonium.getEnemyMult();
-	
+
     var prestigeUpgradeName = "";
     var allUpgradeNames = Object.getOwnPropertyNames(game.upgrades);
     for (var upgrade of allUpgradeNames) {
@@ -930,7 +924,7 @@ function buyPrestigeMaybe(equipName) {
         }
     }
 
-    if (game.upgrades[prestigeUpgradeName].locked) return false;
+    if (game.upgrades[prestigeUpgradeName].locked) return false;;
 
     if (game.upgrades[prestigeUpgradeName].cost.resources.science[0] *
         Math.pow(game.upgrades[prestigeUpgradeName].cost.resources.science[1], game.equipment[equipName].prestige - 1)
@@ -945,15 +939,16 @@ function buyPrestigeMaybe(equipName) {
     }
 
     var levelOnePrestige = getNextPrestigeCost(prestigeUpgradeName) * artBoost;
-    //Checking if AE: Prestige setting is enabled and if we have enough resources for the prestige and if not then returns false. Also checks Pandemonium settings 
-    if ((!getPageSetting('Requipprestige') && levelOnePrestige > game.resources[resource].owned) || (game.global.challengeActive == 'Pandemonium')) return false;
+
+    if (levelOnePrestige > game.resources[resource].owned) return false;
 
     var newLevel = Math.floor(getMaxAffordable(levelOnePrestige * 1.2,game.resources[resource].owned,1.2,true)) + 1;
 
     var newStatValue = (newLevel) * Math.round(equipment[equipStat] * Math.pow(1.19, ((equipment.prestige + 1) * game.global.prestige[equipStat]) + 1));
     var currentStatValue = equipment.level * equipment[equipStat + 'Calculated'];
 
-    return newStatValue > currentStatValue;
+    return newStatValue > currentStatValue 
+    
 }
 
 function RautoEquip() {
@@ -965,41 +960,34 @@ function RautoEquip() {
         prestigeLeft = false;
         for (var equipName in game.equipment) {
             if (buyPrestigeMaybe(equipName)) {
-                if(!game.equipment[equipName].locked) {
-                    if (buyUpgrade(RequipmentList[equipName].Upgrade, true, true)) prestigeLeft = true;
-                }
+              if(!game.equipment[equipName].locked) {
+                buyUpgrade(RequipmentList[equipName].Upgrade, true, true);
+                prestigeLeft = true;
+              }
             }
         }
     } while (prestigeLeft)
     
     // Gather settings
-	var alwaysLvl2 = getPageSetting('Requip2');
-	var alwaysPandemonium = getPageSetting('RPandemoniumAutoEquip') > 0;
-	var attackEquipCap = ((getPageSetting('Requipcapattack') <= 0) ? Infinity : getPageSetting('Requipcapattack'));
-	var healthEquipCap = ((getPageSetting('Requipcaphealth') <= 0) ? Infinity : getPageSetting('Requipcaphealth'));
-    
-	var zoneGo = game.global.challengeActive == "Daily" && getPageSetting('Rdequipon') ? game.global.world >= getPageSetting('Rdequipzone') : game.global.world >= getPageSetting('Requipzone');
+    var alwaysLvl2 = getPageSetting('Requip2');
+    var attackEquipCap = ((getPageSetting('Requipcapattack') <= 0) ? Infinity : getPageSetting('Requipcapattack'));
+    var healthEquipCap = ((getPageSetting('Requipcaphealth') <= 0) ? Infinity : getPageSetting('Requipcaphealth'));
+    if (game.global.challengeActive == "Daily" && getPageSetting('Rdequipon') == true) {
+		var zoneGo = game.global.world >= getPageSetting('Rdequipzone');
+	}
+    else {
+		var zoneGo = game.global.world >= getPageSetting('Requipzone');
+    }
     var resourceMaxPercent = getPageSetting('Requippercent') / 100;
 
     // Always 2
-    if (alwaysLvl2 && game.global.challengeActive != 'Pandemonium') {
+    if (alwaysLvl2) {
         for (var equip in game.equipment) {
             if (game.equipment[equip].level < 2) {
                 buyEquipment(equip, null, true, 1);
             }
         } 
     }
-	
-    // Always buys equipment during Pandemonium
-	if (alwaysPandemonium && game.global.challengeActive == 'Pandemonium') {
-		for (var equip in game.equipment) {
-            if (!game.equipment[equipName].locked) {
-                if (game.challenges.Pandemonium.isEquipBlocked(equip)) continue;
-		        buyUpgrade(RequipmentList[equip].Upgrade, true, true);
-			    buyEquipment(equip, null, true, 1);
-            }
-		}
-	} 
 
     // Loop through actually getting equips
     var keepBuying = false;
@@ -1024,9 +1012,8 @@ function RautoEquip() {
                             Rgetequipcost(equipName, resourceUsed, 1) <= resourceMaxPercent * game.resources[resourceUsed].owned 
                         ) {
                             if (!game.equipment[equipName].locked) {
-                                if (buyPrestigeMaybe(equipName)) continue; 
-                                if (buyEquipment(equipName, null, true, 1)) keepBuying = true;
-                                if (zoneGo) buyEquipment('Shield',null,true,1);
+                                buyEquipment(equipName, null, true, 1);
+                                keepBuying = true;
                             }
                         } 
                     } 
@@ -1071,7 +1058,6 @@ function equipfarmdynamicHD() {
 	
 function estimateEquipsForZone() {
     var artBoost = Math.pow(1 - game.portal.Artisanistry.modifier, game.portal.Artisanistry.radLevel);
-	artBoost *= autoBattle.oneTimers.Artisan.owned ? autoBattle.oneTimers.Artisan.getMult() : 1;
     var MAX_EQUIP_DELTA = 700;
 
     // calculate stats needed pass zone
@@ -1124,9 +1110,9 @@ function estimateEquipsForZone() {
         if (typeof bonusLevels[bestArmor] === 'undefined') {
             bonusLevels[bestArmor] = 0;
         }
-        //if (bonusLevels[bestArmor]++ > MAX_EQUIP_DELTA) {
-        //    return [Infinity, bonusLevels];
-        //}
+        if (bonusLevels[bestArmor]++ > MAX_EQUIP_DELTA) {
+            return [Infinity, bonusLevels];
+        }
     }
     while (attackNeeded > 0) {
         var bestWeapon = mostEfficientEquipment(bonusLevels)[0];

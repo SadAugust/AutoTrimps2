@@ -45,7 +45,7 @@ function autoPortal() {
             break;
         case "Custom":
             var portalzone = getPageSetting('CustomAutoPortal');
-            if (game.global.world >= portalzone) {
+            if (game.global.world > portalzone) {
                 if (autoTrimpSettings.HeliumHourChallenge.selected != 'None')
                     doPortal(autoTrimpSettings.HeliumHourChallenge.selected);
                 else
@@ -121,7 +121,7 @@ function dailyAutoPortal() {
     }
     if (getPageSetting('AutoPortalDaily') == 2) {
         var portalzone = getPageSetting('dCustomAutoPortal');
-        if (game.global.world >= portalzone) {
+        if (game.global.world > portalzone) {
             abandonDaily();
             document.getElementById('finishDailyBtnContainer').style.display = 'none';
             if (autoTrimpSettings.dHeliumHourChallenge.selected != 'None' && getPageSetting('u1daily') == false)
@@ -337,22 +337,19 @@ function RautoPortal() {
             break;
         case "Custom":
             var portalzone = getPageSetting('RCustomAutoPortal');
-            if (game.global.world >= portalzone) {
+            if (game.global.world > portalzone) {
                 if (autoTrimpSettings.RadonHourChallenge.selected != 'None')
                     RdoPortal(autoTrimpSettings.RadonHourChallenge.selected);
                 else
                     RdoPortal();
             }
             break;
-		case "Melt":
-		case "Bublé":
-		case "Quagmire":
-		case "Archaeology":
-		case "Mayhem":
-		case "Insanity":
-		case "Nurture":
-		case "Pandemonium":
-		case "Alchemy":
+        case "Melt":
+	case "Bublé":
+	case "Quagmire":
+	case "Archaeology":
+	case "Insanity":
+	case "Nurture":
             if (!game.global.challengeActive) {
                 RdoPortal(autoTrimpSettings.RAutoPortal.selected);
             }
@@ -409,7 +406,7 @@ function RdailyAutoPortal() {
     }
     if (getPageSetting('RAutoPortalDaily') == 2) {
         var portalzone = getPageSetting('RdCustomAutoPortal');
-        if (game.global.world >= portalzone) {
+        if (game.global.world > portalzone) {
             abandonDaily();
             document.getElementById('finishDailyBtnContainer').style.display = 'none';
             if (autoTrimpSettings.RdHeliumHourChallenge.selected != 'None' && getPageSetting('u2daily') == false)
@@ -561,58 +558,62 @@ function isNextU1DailyWind() {
 }
 
 function Rresetmapvars() {
-	var RdoVoids = !1;
-	var RneedToVoid = !1;
-	var RneedPrestige = !1;
-	var RskippedPrestige = !1;
-	var RscryerStuck = !1;
-	var RshouldDoMaps = !1;
-	var RmapTimeEstimate = 0;
-	var RlastMapWeWereIn = null;
-	var RdoMaxMapBonus = !1;
-	var RdodMaxMapBonus = !1;
-	var RvanillaMapatZone = !1;
-	var Rtributefarm = !1;
-	var Tributefarmmap = undefined;
-	var Rtimefarm = !1;
-	var Rzonecleared = 0;
-	var RadditionalCritMulti = 2 < getPlayerCritChance() ? 25 : 5;
-	var Rshouldtributefarm = !1;
-	var Rshouldtimefarm = !1;
-	var Rshouldalchfarm = !1;
-	var Rshoulddobogs = false;
-	var Rshoulddopraid = false;
-	var Rshoulddoquest = false;
-	var Rquestequalityscale = false;
-	var Rquestshieldzone = 0;
-	var RAMPfragmappy = undefined;
-	var RAMPprefragmappy = undefined;
-	var RAMPpMap = new Array(5);
-	var RAMPrepMap = new Array(5);
-	var RAMPmapbought = [[false],[false],[false],[false],[false]];
-	RAMPmapbought.fill(false);
-	var RAMPfragmappybought = false;
-	var RAMPfragfarming = false;
-	var Rshouldmayhem = 0;
-	var Rshouldpandemonium = 0;
-	var Rinsanityfarm = !1;
-	var Rshouldinsanityfarm = !1;
-	var Rinsanityfragfarming  = false;
-	var insanityfragmappy = undefined;
-	var insanityprefragmappy = undefined;
-	var insanityfragmappybought = false;
-	var Rstormfarm = !1;
-	var Rshouldstormfarm = !1;
-	var Requipfarm = !1;
-	var Rshouldequipfarm = !1;
-	var Requipminusglobal = -1;
-	var Rshipfarm = !1;
-	var Rshouldshipfarm = !1;
-	var Rshipfragfarming = false;
-	var shipfragmappy = undefined;
-	var shipprefragmappy = undefined;
-	var shipfragmappybought = false;
-	var RAlchFarm = !1;
-	var alchfarmmap = undefined;
-	var alchbiome = "Plentiful";
+	RdoVoids = !1;
+	RneedToVoid = !1;
+	RneedPrestige = !1;
+	RskippedPrestige = !1;
+	RscryerStuck = !1;
+	RshouldDoMaps = !1;
+	RmapTimeEstimate = 0;
+	RlastMapWeWereIn = null;
+	RdoMaxMapBonus = !1;
+	RvanillaMapatZone = !1;
+	Rtimefarm = !1;
+	RadditionalCritMulti = 2 < getPlayerCritChance() ? 25 : 5;
+	Rshouldtimefarm = !1;
+	Rshouldtimefarmbogs = !1;
+	Rshoulddobogs = false;
+	Rshoulddopraid = false;
+	Rshoulddoquest = false;
+	Rquestequalityscale = false;
+	Rquestshieldzone = 0;
+	RAMPpMap1 = undefined;
+	RAMPpMap2 = undefined;
+	RAMPpMap3 = undefined;
+	RAMPpMap4 = undefined;
+	RAMPpMap5 = undefined;
+	RAMPfragmappy = undefined;
+	RAMPrepMap1 = undefined;
+	RAMPrepMap2 = undefined;
+	RAMPrepMap3 = undefined;
+	RAMPrepMap4 = undefined;
+	RAMPrepMap5 = undefined;
+	RAMPprefragmappy = undefined;
+	RAMPmapbought1 = false;
+	RAMPmapbought2 = false;
+	RAMPmapbought3 = false;
+	RAMPmapbought4 = false;
+	RAMPmapbought5 = false;
+	RAMPfragmappybought = false;
+	RAMPdone = false;
+	RAMPfragfarming = false;
+	Rshouldmayhem = 0;
+	Rmayhemextraglobal = -1;
+	Rinsanityfarm = !1;
+	Rshouldinsanityfarm = !1;
+	Rinsanityfragfarming = false;
+	insanityfragmappy = undefined;
+	insanityprefragmappy = undefined;
+	insanityfragmappybought = false;
+	Rstormfarm = !1;
+	Rshouldstormfarm = !1;
+	Requipfarm = !1;
+	Rshouldequipfarm = !1;
+	Requipminusglobal = -1;
+	Rshipfarm = !1;
+	Rshouldshipfarm = !1;
+	Rshipfragfarming = false;
+	shipfragmappy = undefined;
+	shipprefragmappy = undefined;
+	shipfragmappybought = false;
 };
