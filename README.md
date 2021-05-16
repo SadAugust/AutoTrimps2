@@ -11,7 +11,7 @@ https://www.tampermonkey.net/
 
 Step 2: 
 
-Click this link: https://github.com/SadAugust/AutoTrimps/main/.user.js
+Click this link: https://github.com/SadAugust/AutoTrimps/blob/main/.user.js
 
 Step 3: 
 
