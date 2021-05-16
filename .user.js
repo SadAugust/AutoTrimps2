@@ -11,7 +11,7 @@
 // @connect      *SadAugust.github.io/AutoTrimps*
 // @connect      *trimps.github.io*
 // @connect      self
-// @grant        GM_xmlhttpRequest 
+// @grant        GM_xmlhttpRequest
 // ==/UserScript==
 
 var script = document.createElement('script');
