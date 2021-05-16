@@ -1,5 +1,5 @@
 //Initialize the saved data objects, and load data/grab from browser if found.
-var basepath = 'https://192.168.0.101:8887/AutoTrimps_Local/';
+var basepath = 'https://SadAugust.github.io/AutoTrimps/';
 function safeSetItems(name,data) {
     try {
         localStorage.setItem(name, data);
