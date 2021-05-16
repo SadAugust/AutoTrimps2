@@ -1600,7 +1600,7 @@ function RautoMap() {
 					for (var map in game.global.mapsOwnedArray) {
 						if (!game.global.mapsOwnedArray[map].noRecycle && mayhemextra >= 0 && ((game.global.world + mayhemextra) == game.global.mapsOwnedArray[map].level)) {
 							selectedMap = game.global.mapsOwnedArray[map].id;
-				break;
+							break;
 						} else {
 							selectedMap = "create";
 						}
@@ -1609,7 +1609,7 @@ function RautoMap() {
 					for (var map in game.global.mapsOwnedArray) {
 						if (!game.global.mapsOwnedArray[map].noRecycle && game.global.world == game.global.mapsOwnedArray[map].level) {
 							selectedMap = game.global.mapsOwnedArray[map].id;
-				break;
+							break;
 						} else {
 							selectedMap = "create";
 						}
@@ -1620,7 +1620,7 @@ function RautoMap() {
 					for (var map in game.global.mapsOwnedArray) {
 						if (!game.global.mapsOwnedArray[map].noRecycle && game.global.world == game.global.mapsOwnedArray[map].level) {
 							selectedMap = game.global.mapsOwnedArray[map].id;
-				break;
+							break;
 						} else {
 							selectedMap = "create";
 						}
@@ -1633,7 +1633,7 @@ function RautoMap() {
 						for (var map in game.global.mapsOwnedArray) {
 							if (!game.global.mapsOwnedArray[map].noRecycle && ((game.global.world + insanitylevelzones) == game.global.mapsOwnedArray[map].level)) {
 								selectedMap = game.global.mapsOwnedArray[map].id;
-				break;
+								break;
 							} else {
 								selectedMap = "create";
 							}
@@ -1642,7 +1642,7 @@ function RautoMap() {
 						for (var map in game.global.mapsOwnedArray) {
 							if (!game.global.mapsOwnedArray[map].noRecycle && game.global.world == game.global.mapsOwnedArray[map].level) {
 								selectedMap = game.global.mapsOwnedArray[map].id;
-				break;
+								break;
 							} else {
 								selectedMap = "create";
 							}
@@ -1651,7 +1651,7 @@ function RautoMap() {
 						for (var map in game.global.mapsOwnedArray) {
 							if (!game.global.mapsOwnedArray[map].noRecycle && ((game.global.world + insanitylevelzones) == game.global.mapsOwnedArray[map].level)) {
 								selectedMap = game.global.mapsOwnedArray[map].id;
-				break;
+								break;
 							} else {
 								selectedMap = "create";
 							}
@@ -1663,7 +1663,7 @@ function RautoMap() {
 					for (var map in game.global.mapsOwnedArray) {
 						if (!game.global.mapsOwnedArray[map].noRecycle && game.global.world == game.global.mapsOwnedArray[map].level) {
 							selectedMap = game.global.mapsOwnedArray[map].id;
-				break;
+							break;
 						} else {
 							selectedMap = "create";
 						}
@@ -1676,7 +1676,7 @@ function RautoMap() {
 						for (var map in game.global.mapsOwnedArray) {
 							if (!game.global.mapsOwnedArray[map].noRecycle && ((game.global.world + shiplevelzones) == game.global.mapsOwnedArray[map].level)) {
 								selectedMap = game.global.mapsOwnedArray[map].id;
-				break;
+								break;
 							} else {
 								selectedMap = "create";
 							}
@@ -1685,7 +1685,7 @@ function RautoMap() {
 						for (var map in game.global.mapsOwnedArray) {
 							if (!game.global.mapsOwnedArray[map].noRecycle && game.global.world == game.global.mapsOwnedArray[map].level) {
 								selectedMap = game.global.mapsOwnedArray[map].id;
-				break;
+								break;
 							} else {
 								selectedMap = "create";
 							}
@@ -1694,7 +1694,7 @@ function RautoMap() {
 						for (var map in game.global.mapsOwnedArray) {
 							if (!game.global.mapsOwnedArray[map].noRecycle && ((game.global.world + shiplevelzones) == game.global.mapsOwnedArray[map].level)) {
 								selectedMap = game.global.mapsOwnedArray[map].id;
-				break;
+								break;
 							} else {
 								selectedMap = "create";
 							}
@@ -1706,7 +1706,7 @@ function RautoMap() {
 					for (var map in game.global.mapsOwnedArray) {
 						if (!game.global.mapsOwnedArray[map].noRecycle && game.global.world == game.global.mapsOwnedArray[map].level) {
 							selectedMap = game.global.mapsOwnedArray[map].id;
-				break;
+							break;
 						} else {
 							selectedMap = "create";
 						}
@@ -1716,7 +1716,7 @@ function RautoMap() {
 						for (var map in game.global.mapsOwnedArray) {
 							if (!game.global.mapsOwnedArray[map].noRecycle && ((game.global.world + levelzones) == game.global.mapsOwnedArray[map].level) && (game.global.mapsOwnedArray[map].bonus == tribspecial)) {
 								selectedMap = game.global.mapsOwnedArray[map].id;
-				break;
+								break;
 							} else {
 								selectedMap = "create";
 							}
@@ -1725,7 +1725,7 @@ function RautoMap() {
 						for (var map in game.global.mapsOwnedArray) {
 							if (!game.global.mapsOwnedArray[map].noRecycle && game.global.world == game.global.mapsOwnedArray[map].level && (game.global.mapsOwnedArray[map].bonus == tribspecial)) {
 								selectedMap = game.global.mapsOwnedArray[map].id;
-				break;
+								break;
 							} else {
 								selectedMap = "create";
 							}
@@ -1734,7 +1734,7 @@ function RautoMap() {
 						for (var map in game.global.mapsOwnedArray) {
 							if (!game.global.mapsOwnedArray[map].noRecycle && ((game.global.world - 1) == game.global.mapsOwnedArray[map].level) && (game.global.mapsOwnedArray[map].bonus == tribspecial)) {
 								selectedMap = game.global.mapsOwnedArray[map].id;
-				break;
+								break;
 							} else {
 								selectedMap = "create";
 							}
@@ -1746,7 +1746,7 @@ function RautoMap() {
 					for (var map in game.global.mapsOwnedArray) {
 						if (!game.global.mapsOwnedArray[map].noRecycle && game.global.world == game.global.mapsOwnedArray[map].level && game.global.mapsOwnedArray[map].bonus == rtimespecial) {
 							selectedMap = game.global.mapsOwnedArray[map].id;
-				break;
+							break;
 						} else {
 							selectedMap = "create";
 						}
@@ -1756,7 +1756,7 @@ function RautoMap() {
 						for (var map in game.global.mapsOwnedArray) {
 							if (!game.global.mapsOwnedArray[map].noRecycle && ((game.global.world + levelzones) == game.global.mapsOwnedArray[map].level) && (game.global.mapsOwnedArray[map].bonus == rtimespecial)) {
 								selectedMap = game.global.mapsOwnedArray[map].id;
-				break;
+								break;
 							} else {
 								selectedMap = "create";
 							}
@@ -1765,7 +1765,7 @@ function RautoMap() {
 						for (var map in game.global.mapsOwnedArray) {
 							if (!game.global.mapsOwnedArray[map].noRecycle && game.global.world == game.global.mapsOwnedArray[map].level && game.global.mapsOwnedArray[map].bonus == rtimespecial) {
 								selectedMap = game.global.mapsOwnedArray[map].id;
-				break;
+								break;
 							} else {
 								selectedMap = "create";
 							}
@@ -1774,7 +1774,7 @@ function RautoMap() {
 						for (var map in game.global.mapsOwnedArray) {
 							if (!game.global.mapsOwnedArray[map].noRecycle && ((game.global.world - 1) == game.global.mapsOwnedArray[map].level) && (game.global.mapsOwnedArray[map].bonus == rtimespecial)) {
 								selectedMap = game.global.mapsOwnedArray[map].id;
-				break;
+								break;
 							} else {
 								selectedMap = "create";
 							}
@@ -1785,7 +1785,7 @@ function RautoMap() {
 				for (var map in game.global.mapsOwnedArray) {
 					if (!game.global.mapsOwnedArray[map].noRecycle && equipminus <= 0 && ((game.global.world + equipminus) == game.global.mapsOwnedArray[map].level)) {
 						selectedMap = game.global.mapsOwnedArray[map].id;
-			break;
+						break;
 					} else {
 							selectedMap = "create";
 					}
@@ -1794,7 +1794,7 @@ function RautoMap() {
 					for (var map in game.global.mapsOwnedArray) {
 						if (!game.global.mapsOwnedArray[map].noRecycle && game.global.world == game.global.mapsOwnedArray[map].level) {
 							selectedMap = game.global.mapsOwnedArray[map].id;
-				break;
+							break;
 						} else {
 							selectedMap = "create";
 						}
