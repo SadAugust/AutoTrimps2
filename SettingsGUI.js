@@ -1284,6 +1284,9 @@ function updateCustomButtons() {
 	if (document.getElementById("tabNature") != null) {
 		document.getElementById("tabNature").style.display = radonon ? "none" : "";
 	}
+	if (document.getElementById("tabC3") != null) {
+		document.getElementById("tabC3").style.display = !radonon ? "none" : "";
+	}
 	if (document.getElementById("tabChallenges") != null) {
 		document.getElementById("tabChallenges").style.display = !radonon ? "none" : "";
 	}
