@@ -1239,7 +1239,6 @@ function RautoMap() {
 				}
 			}
 		}
-		
 		//AutoEquip settings for Pandemonium. Can probably make this more efficient? Looks a bit of a mess.
 		if (!Rshouldpandemonium && getPageSetting('RPandemoniumAutoEquip') > 0 && game.global.lastClearedCell > 60 && game.global.StaffEquipped.name == getPageSetting('RPandemoniumAEStaff') && getPageSetting('RPandemoniumAEZone') > 5) {
 			if (game.global.world >= getPageSetting('RPandemoniumAEZone')) {
