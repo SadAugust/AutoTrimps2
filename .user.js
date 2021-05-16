@@ -8,7 +8,7 @@
 // @include      *trimps.github.io*
 // @include      *kongregate.com/games/GreenSatellite/trimps
 // @include      *trimpstest55.netlify.app/*
-// @connect      *SadAugust.github.io/AutoTrimps*
+// @connect      *192.168.0.101:8887/AutoTrimps_Local*
 // @connect      *trimps.github.io*
 // @connect      self
 // @grant        GM_xmlhttpRequest
