@@ -1,17 +1,17 @@
 // ==UserScript==
 // @name         AutoTrimps-SadAugust
 // @version      1.0-SadAugust
-// @namespace    https://SadAugust.github.io/AutoTrimps
+// @namespace    https://SadAugust.github.io/AutoTrimps/
 // @updateURL    https://SadAugust.github.io/AutoTrimps/.user.js
 // @description  Automate all the trimps!
 // @author       zininzinin, spindrjr, Ishkaru, genBTC, Zeker0, SadAugust
 // @include      *trimps.github.io*
 // @include      *kongregate.com/games/GreenSatellite/trimps
 // @include      *trimpstest55.netlify.app/*
-// @connect      *SadAugust.github.io/AutoTrimps*
+// @connect      *192.168.0.101:8887/AutoTrimps_Local*
 // @connect      *trimps.github.io*
 // @connect      self
-// @grant        GM_xmlhttpRequest 
+// @grant        GM_xmlhttpRequest
 // ==/UserScript==
 
 var script = document.createElement('script');

@@ -30,7 +30,7 @@ function autoGoldenUpgradesAT(setting) {
 	if (setting == "Battle")
 	setting2 = "Battle";
 	if ((!game.global.dailyChallenge.seed && !game.global.runningChallengeSquared && autoTrimpSettings.AutoGoldenUpgrades.selected == "Battle" && getPageSetting('battleradon') > 0 && game.goldenUpgrades.Battle.purchasedAt.length >= getPageSetting('battleradon')) || (game.global.dailyChallenge.seed && autoTrimpSettings.dAutoGoldenUpgrades.selected == "Battle" && getPageSetting('dbattleradon') > 0 && game.goldenUpgrades.Battle.purchasedAt.length >= getPageSetting('dbattleradon')))
-	setting2 = "Helium";
+	setting2 = "Helium";	
 	if (setting == "Void" || setting == "Void + Battle")
 		setting2 = "Void";
 	var success = buyGoldenUpgrade(setting2);
@@ -1822,7 +1822,7 @@ function armormagic() {
 
 trapIndexs = ["","Fire","Frost","Poison","Lightning","Strength","Condenser","Knowledge"];
 
-function tdStringCode2(){
+function tdStringCode2() {
 	var thestring=document.getElementById('importBox').value.replace(/\s/g, '');
 	var s = new String(thestring);
 	var index = s.indexOf("+",0);
@@ -1843,52 +1843,60 @@ function tdStringCode2(){
 	}
 }
 
-playerSpire.drawInfo = function() {
-		if (!this.popupOpen) return;
-		if (this.smallMode){
-			this.drawSmallInfo();
-			return;
-		}
-		var elem = document.getElementById('playerSpireInfoPanel');
-		var infoHtml = "";
-		infoHtml += "<div id='playerSpireInfoTop'>";
-		infoHtml += "<span onmouseover='playerSpire.infoTooltip(\"Runestones\", event)' onmouseout='tooltip(\"hide\")'>Runestones: <span id='playerSpireRunestones'>" + prettify(this.runestones) + "</span><br/>Runestones per Second: <span id='RsPs'>" + prettify(this.getRsPs()) + "</span></span>";
-		infoHtml += "<br/><span onmouseover='playerSpire.infoTooltip(\"Enemies\", event)' onmouseout='tooltip(\"hide\")'>Enemies: <span id='playerSpireCurrentEnemies'>" + this.currentEnemies + "</span> / <span id='playerSpireMaxEnemies'>" + this.maxEnemies + "</span></span>";
-		infoHtml += "<br/><span onmouseover='playerSpire.infoTooltip(\"Spirestones\", event)' onmouseout='tooltip(\"hide\")' id='spirestoneBox'>" + this.getSpirestoneHtml() + "</span><br/><span onmouseover='playerSpire.infoTooltip(\"Threat\", event)' onmouseout='tooltip(\"hide\")' id='playerSpireDifficulty'>" + this.getDifficultyHtml() + "</span></div>";
-		infoHtml += "<div id='spireTrapsWindow'>";
-		infoHtml += "<div onclick='playerSpire.shrink()' id='shrinkSpireBox' class='spireControlBox'>Shrink Window</div>";
-		infoHtml += "<div onclick='playerSpire.settingsTooltip()' id='spireSettingsBox' class='spireControlBox'>Settings</div>"
-		infoHtml += "<div onclick='tooltip(\"confirm\", null, \"update\", \"Are you sure you want to sell all Traps and Towers? You will get back 100% of Runestones spent on them.<br/><br/>" + ((this.paused) ? "" : "<b>Protip:</b> Pause your Spire before selling your defenses if you want to avoid leaking!") + "\", \"playerSpire.resetTraps()\", \"Sell All?\")' class='spireControlBox'>Sell All</div>";
-		infoHtml += "<div onclick='playerSpire.togglePause()' id='pauseSpireBtn' class='spireControlBox spirePaused" + ((this.paused) ? "Yes'>Unpause" : "'>Pause Spire") + "</div>";	  
-		infoHtml += "<div class='spireControlBoxDbl'><div onclick='playerSpire.presetTooltip(1)'>Layout 1</div><div onclick='playerSpire.presetTooltip(2)'>Layout 2</div></div>"
-		infoHtml += "<div onclick='playerSpire.selectTrap(\"shiftUp\")' onmouseout='tooltip(\"hide\")' onmouseover='playerSpire.trapTooltip(\"shiftUp\", event)' id='sellTrapBox' class='spireControlBox" + ((this.selectedTrap == "shiftUp") ? " selected" : "") + "'>Shift Up</div>";
-		infoHtml += "<div onclick='playerSpire.selectTrap(\"shiftDown\")' onmouseout='tooltip(\"hide\")' onmouseover='playerSpire.trapTooltip(\"shiftDown\", event)' id='sellTrapBox' class='spireControlBox" + ((this.selectedTrap == "shiftDown") ? " selected" : "") + "'>Shift Down</div>";
-	  	infoHtml += "<div onclick='ImportExportTooltip(\"spireImport\")' class='spireControlBox'>Import</div>";
-
-
-		infoHtml += "<br/><hr/>"
-		infoHtml += "<div onclick='playerSpire.selectTrap(\"sell\")' onmouseout='tooltip(\"hide\")' onmouseover='playerSpire.trapTooltip(\"sell\", event)' style='padding-top: 1.35vw' id='sellTrapBox' class='spireTrapBox" + ((this.selectedTrap == "sell") ? " selected" : "") + "'>Sell a Trap/Tower</div>";
-		var cheapestTrap = -1;
-		for (var item in playerSpireTraps){
-			var trap = playerSpireTraps[item];
-			if (trap.locked) continue;
-			var trapText = trap.isTower ? "Tower" : "Trap";
-			trapText += " " + romanNumeral(trap.level);
-			var trapIcon = "";
-			if (this.settings.trapIcons) trapIcon = "<span class='icomoon icon-" + trap.icon + "'></span> ";
-			var cost = this.getTrapCost(item);
-			var color = (this.runestones >= cost) ? trap.color : "grey";
-			infoHtml += "<div style='background-color: " + color + "' onmouseout='tooltip(\"hide\")' onmouseover='playerSpire.trapTooltip(\"" + item + "\", event)' onclick='playerSpire.selectTrap(\"" + item + "\")' id='" + item + "TrapBox' class='spireTrapBox" + ((item == this.selectedTrap) ? " selected" : "") + "'>" + trapIcon + item + " " + trapText + "<br/>" + prettify(this.getTrapCost(item)) + " Rs</div>"
-			if (this.runestones < cost && (cheapestTrap == -1 || cost < cheapestTrap)) cheapestTrap = cost;
-		}
-		this.nextTrap = cheapestTrap;
-		infoHtml += "</div><hr/>"; //spireTrapsWindow
-		infoHtml += "<span id='playerSpireCloseBtn' class='icomoon icon-close' onclick='playerSpire.closePopup()'></span>";
-		infoHtml += "<div id='playerSpireUpgradesArea'>";
-		infoHtml += this.getUpgradesHtml();
-		infoHtml += "</div>"; //playerSpireUpgradesArea
-		elem.innerHTML = infoHtml;
+/*playerSpire.drawInfo = function() {
+	if (!this.popupOpen) return;
+	if (this.smallMode){
+		this.drawSmallInfo();
+		return;
 	}
+	var elem = document.getElementById('playerSpireInfoPanel');
+	var infoHtml = "";
+	infoHtml += "<div id='playerSpireInfoTop'>";
+	infoHtml += "<span onmouseover='playerSpire.infoTooltip(\"Runestones\", event)' onmouseout='tooltip(\"hide\")'>Runestones: <span id='playerSpireRunestones'>" + prettify(this.runestones) + "</span><br/>Runestones per Second: <span id='RsPs'>" + prettify(this.getRsPs()) + "</span></span>";
+	infoHtml += "<br/><span onmouseover='playerSpire.infoTooltip(\"Enemies\", event)' onmouseout='tooltip(\"hide\")'>Enemies: <span id='playerSpireCurrentEnemies'>" + this.currentEnemies + "</span> / <span id='playerSpireMaxEnemies'>" + this.maxEnemies + "</span></span>";
+	infoHtml += "<br/><span onmouseover='playerSpire.infoTooltip(\"Spirestones\", event)' onmouseout='tooltip(\"hide\")' id='spirestoneBox'>" + this.getSpirestoneHtml() + "</span><br/><span onmouseover='playerSpire.infoTooltip(\"Threat\", event)' onmouseout='tooltip(\"hide\")' id='playerSpireDifficulty'>" + this.getDifficultyHtml() + "</span></div>";
+	infoHtml += "<div id='spireTrapsWindow'>";
+	infoHtml += "<div onclick='playerSpire.shrink()' id='shrinkSpireBox' class='spireControlBox'>Shrink Window</div>";
+	infoHtml += "<div onclick='playerSpire.settingsTooltip()' id='spireSettingsBox' class='spireControlBox'>Settings</div>"
+	infoHtml += "<div onclick='tooltip(\"confirm\", null, \"update\", \"Are you sure you want to sell all Traps and Towers? You will get back 100% of Runestones spent on them.<br/><br/>" + ((this.paused) ? "" : "<b>Protip:</b> Pause your Spire before selling your defenses if you want to avoid leaking!") + "\", \"playerSpire.resetTraps()\", \"Sell All?\")' class='spireControlBox'>Sell All</div>";
+	infoHtml += "<div onclick='playerSpire.togglePause()' id='pauseSpireBtn' class='spireControlBox spirePaused" + ((this.paused) ? "Yes'>Unpause" : "'>Pause Spire") + "</div>";      
+	infoHtml += "<div class='spireControlBoxDbl'><div onclick='playerSpire.presetTooltip(1)'>Layout 1</div><div onclick='playerSpire.presetTooltip(2)'>Layout 2</div></div>"
+	infoHtml += "<div onclick='playerSpire.selectTrap(\"shiftUp\")' onmouseout='tooltip(\"hide\")' onmouseover='playerSpire.trapTooltip(\"shiftUp\", event)' id='sellTrapBox' class='spireControlBox" + ((this.selectedTrap == "shiftUp") ? " selected" : "") + "'>Shift Up</div>";
+	infoHtml += "<div onclick='playerSpire.selectTrap(\"shiftDown\")' onmouseout='tooltip(\"hide\")' onmouseover='playerSpire.trapTooltip(\"shiftDown\", event)' id='sellTrapBox' class='spireControlBox" + ((this.selectedTrap == "shiftDown") ? " selected" : "") + "'>Shift Down</div>";
+	infoHtml += "<div onclick='ImportExportTooltip(\"spireImport\")' class='spireControlBox'>Import</div>";
+	infoHtml += "<br/><hr/>"
+	infoHtml += "<div onclick='playerSpire.selectTrap(\"sell\")' onmouseout='tooltip(\"hide\")' onmouseover='playerSpire.trapTooltip(\"sell\", event)' style='padding-top: 1.35vw' id='sellTrapBox' class='spireTrapBox" + ((this.selectedTrap == "sell") ? " selected" : "") + "'>Sell a Trap/Tower</div>";
+	var cheapestTrap = -1;
+	for (var item in playerSpireTraps) {
+		var trap = playerSpireTraps[item];
+		if (trap.locked) continue;
+		var trapText = trap.isTower ? "Tower" : "Trap";
+		trapText += " " + romanNumeral(trap.level);
+		var trapIcon = "";
+		if (this.settings.trapIcons) trapIcon = "<span class='icomoon icon-" + trap.icon + "'></span> ";
+		var cost = this.getTrapCost(item);
+		var color = (this.runestones >= cost) ? trap.color : "grey";
+		infoHtml += "<div style='background-color: " + color + "' onmouseout='tooltip(\"hide\")' onmouseover='playerSpire.trapTooltip(\"" + item + "\", event)' onclick='playerSpire.selectTrap(\"" + item + "\")' id='" + item + "TrapBox' class='spireTrapBox" + ((item == this.selectedTrap) ? " selected" : "") + "'>" + trapIcon + item + " " + trapText + "<br/>" + prettify(this.getTrapCost(item)) + " Rs</div>"
+		if (this.runestones < cost && (cheapestTrap == -1 || cost < cheapestTrap)) cheapestTrap = cost;
+	}
+	this.nextTrap = cheapestTrap;
+	infoHtml += "</div><hr/>"; //spireTrapsWindow
+	infoHtml += "<span id='playerSpireCloseBtn' class='icomoon icon-close' onclick='playerSpire.closePopup()'></span>";
+	infoHtml += "<div id='playerSpireUpgradesArea'>";
+	infoHtml += this.getUpgradesHtml();
+	infoHtml += "</div>"; //playerSpireUpgradesArea
+	elem.innerHTML = infoHtml;
+}*/
+
+var oldPlayerSpireDrawInfo = playerSpire.drawInfo;
+playerSpire.drawInfo = function(arguments) {
+	var ret = oldPlayerSpireDrawInfo.apply(this, arguments);
+	var elem = document.getElementById('spireTrapsWindow');
+	if (!elem) return arguments;
+	var importBtn = "<div onclick='ImportExportTooltip(\"spireImport\")' class='spireControlBox'>Import</div>";
+	elem.innerHTML = importBtn + elem.innerHTML;
+	return arguments;
+}
 
 //Radon
 function RbuyWeps(){if(!((getPageSetting('RBuyWeaponsNew')==1)||(getPageSetting('RBuyWeaponsNew')==3)))return;preBuy(),game.global.buyAmt=getPageSetting('Rgearamounttobuy'),game.equipment.Dagger.level<getPageSetting('RCapEquip2')&&canAffordBuilding('Dagger',null,null,!0)&&buyEquipment('Dagger',!0,!0),game.equipment.Mace.level<getPageSetting('RCapEquip2')&&canAffordBuilding('Mace',null,null,!0)&&buyEquipment('Mace',!0,!0),game.equipment.Polearm.level<getPageSetting('RCapEquip2')&&canAffordBuilding('Polearm',null,null,!0)&&buyEquipment('Polearm',!0,!0),game.equipment.Battleaxe.level<getPageSetting('RCapEquip2')&&canAffordBuilding('Battleaxe',null,null,!0)&&buyEquipment('Battleaxe',!0,!0),game.equipment.Greatsword.level<getPageSetting('RCapEquip2')&&canAffordBuilding('Greatsword',null,null,!0)&&buyEquipment('Greatsword',!0,!0),!game.equipment.Arbalest.locked&&game.equipment.Arbalest.level<getPageSetting('RCapEquip2')&&canAffordBuilding('Arbalest',null,null,!0)&&buyEquipment('Arbalest',!0,!0),postBuy()}
@@ -1914,41 +1922,21 @@ function questcheck() {
 	if (game.global.world < game.challenges.Quest.getQuestStartZone()) {
 	    return 0;
 	}
-	//x5 resource
-	if (game.challenges.Quest.getQuestDescription() == "Quintuple (x5) your food" && game.challenges.Quest.getQuestProgress() != "Quest Complete!" && game.challenges.Quest.getQuestProgress() != "Failed!")
-		return 10;
-	else if (game.challenges.Quest.getQuestDescription() == "Quintuple (x5) your wood" && game.challenges.Quest.getQuestProgress() != "Quest Complete!" && game.challenges.Quest.getQuestProgress() != "Failed!")
-		return 11;
-	else if (game.challenges.Quest.getQuestDescription() == "Quintuple (x5) your metal" && game.challenges.Quest.getQuestProgress() != "Quest Complete!" && game.challenges.Quest.getQuestProgress() != "Failed!")
-		return 12;
-	else if (game.challenges.Quest.getQuestDescription() == "Quintuple (x5) your gems" && game.challenges.Quest.getQuestProgress() != "Quest Complete!" && game.challenges.Quest.getQuestProgress() != "Failed!")
-		return 13;
-	else if (game.challenges.Quest.getQuestDescription() == "Quintuple (x5) your science" && game.challenges.Quest.getQuestProgress() != "Quest Complete!" && game.challenges.Quest.getQuestProgress() != "Failed!")
-		return 14;
-	//x2 resource
-	else if (game.challenges.Quest.getQuestDescription() == "Double your food" && game.challenges.Quest.getQuestProgress() != "Quest Complete!" && game.challenges.Quest.getQuestProgress() != "Failed!")
-		return 20;
-	else if (game.challenges.Quest.getQuestDescription() == "Double your wood" && game.challenges.Quest.getQuestProgress() != "Quest Complete!" && game.challenges.Quest.getQuestProgress() != "Failed!")
-		return 21;
-	else if (game.challenges.Quest.getQuestDescription() == "Double your metal" && game.challenges.Quest.getQuestProgress() != "Quest Complete!" && game.challenges.Quest.getQuestProgress() != "Failed!")
-		return 22;
-	else if (game.challenges.Quest.getQuestDescription() == "Double your gems" && game.challenges.Quest.getQuestProgress() != "Quest Complete!" && game.challenges.Quest.getQuestProgress() != "Failed!")
-		return 23;
-	else if (game.challenges.Quest.getQuestDescription() == "Double your science" && game.challenges.Quest.getQuestProgress() != "Quest Complete!" && game.challenges.Quest.getQuestProgress() != "Failed!")
-		return 24;
+	
+	if (game.challenges.Quest.getQuestProgress() == "Quest Complete!" || game.challenges.Quest.getQuestProgress() == "Failed!") return 0;
+	//Resource multipliers
+	else if (game.challenges.Quest.getQuestDescription().includes("food")) return 1;
+	else if (game.challenges.Quest.getQuestDescription().includes("wood")) return 2;
+	else if (game.challenges.Quest.getQuestDescription().includes("metal")) return 3;
+	else if (game.challenges.Quest.getQuestDescription().includes("gems")) return 4;
+	else if (game.challenges.Quest.getQuestDescription().includes("science")) return 5;
 	//Everything else
-	else if (game.challenges.Quest.getQuestDescription() == "Complete 5 Maps at Zone level" && game.challenges.Quest.getQuestProgress() != "Quest Complete!" && game.challenges.Quest.getQuestProgress() != "Failed!")
-		return 3;
-	else if (game.challenges.Quest.getQuestDescription() == "One-shot 5 world enemies" && game.challenges.Quest.getQuestProgress() != "Quest Complete!" && game.challenges.Quest.getQuestProgress() != "Failed!")
-		return 4;
-	else if (game.challenges.Quest.getQuestDescription() == "Don't let your shield break before Cell 100" && game.challenges.Quest.getQuestProgress() != "Quest Complete!" && game.challenges.Quest.getQuestProgress() != "Failed!")
-		return 5;
-	else if (game.challenges.Quest.getQuestDescription() == "Don't run a map before Cell 100" && game.challenges.Quest.getQuestProgress() != "Quest Complete!" && game.challenges.Quest.getQuestProgress() != "Failed!")
-		return 6;
-	else if (game.challenges.Quest.getQuestDescription() == "Buy a Smithy" && game.challenges.Quest.getQuestProgress() != "Quest Complete!" && game.challenges.Quest.getQuestProgress() != "Failed!")
-		return 7;
-	else
-		return 0;
+	else if (game.challenges.Quest.getQuestDescription() == "Complete 5 Maps at Zone level") return 6;
+	else if (game.challenges.Quest.getQuestDescription() == "One-shot 5 world enemies") return 7;
+	else if (game.challenges.Quest.getQuestDescription() == "Don't let your shield break before Cell 100") return 8;
+	else if (game.challenges.Quest.getQuestDescription() == "Don't run a map before Cell 100") return 9;
+	else if (game.challenges.Quest.getQuestDescription() == "Buy a Smithy") return 10;
+	else return 0;
 }
 
 function Rgetequipcost(equip, resource, amt) {
@@ -1963,15 +1951,9 @@ function smithylogic(name, resource, equip) {
 	
 	//Checks
 	
-	if (getPageSetting('Rsmithylogic') == false || getPageSetting('Rsmithynumber') <= 0 || getPageSetting('Rsmithypercent') <= 0 || getPageSetting('Rsmithyseconds') <= 0) {
-		return go;
-	}
-	if (getPageSetting('Rsmithynumber') > 0 && getPageSetting('Rsmithynumber') >= game.buildings.Smithy.owned) {
-		return go;
-	}
-	if (name == undefined) {
-		return go;
-	}
+	if (getPageSetting('Rsmithylogic') == false || getPageSetting('Rsmithynumber') <= 0 || getPageSetting('Rsmithypercent') <= 0 || getPageSetting('Rsmithyseconds') <= 0) return go;
+	if (getPageSetting('Rsmithynumber') > 0 && getPageSetting('Rsmithynumber') >= game.buildings.Smithy.owned) return go;
+	if (name == undefined) return go;
 	
 	//Vars
 	
@@ -2066,20 +2048,14 @@ function smithylogic(name, resource, equip) {
 }
 
 function archstring() {
-	if (getPageSetting('Rarchon') == false) return;
+	if (!getPageSetting('Rarchon')) return;
 	if (getPageSetting('Rarchstring1') != "undefined" && getPageSetting('Rarchstring2') != "undefined" && getPageSetting('Rarchstring3') != "undefined") {
 		var string1 = getPageSetting('Rarchstring1'), string2 = getPageSetting('Rarchstring2'), string3 = getPageSetting('Rarchstring3');
 		var string1z = string1.split(',')[0], string2z = string2.split(',')[0];
 		var string1split = string1.split(',').slice(1).toString(), string2split = string2.split(',').slice(1).toString();
-		if (game.global.world <= string1z && game.global.archString != string1split) {
-		game.global.archString = string1split;
-		}
-		if (game.global.world > string1z && game.global.world <= string2z && game.global.archString != string2split) {
-		game.global.archString = string2split;
-		}
-		if (game.global.world > string2z && game.global.archString != string3) {
-		game.global.archString = string3;
-		}
+		if (game.global.world <= string1z && game.global.archString != string1split) game.global.archString = string1split;
+		if (game.global.world > string1z && game.global.world <= string2z && game.global.archString != string2split) game.global.archString = string2split;
+		if (game.global.world > string2z && game.global.archString != string3) game.global.archString = string3;
 	}
 }
 
@@ -2087,19 +2063,13 @@ function archstring() {
 function RAMPplusMapToRun(number) {
 	var map;
 	if (Rshoulddopraid) {
-		if (game.global.challengeActive == "Daily") {
-			var praidzone = getPageSetting('RAMPdraidzone');
-			var raidzone = getPageSetting('RAMPdraidraid');
-		} else {
-			var praidzone = getPageSetting('RAMPraidzone');
-			var raidzone = getPageSetting('RAMPraidraid');
-		}
-
+		var praidzone = game.global.challengeActive == "Daily" ? getPageSetting('RAMPdraidzone') : getPageSetting('RAMPraidzone');
+		var raidzone = game.global.challengeActive == "Daily" ? getPageSetting('RAMPdraidraid') : getPageSetting('RAMPraidraid');
 		var praidindex = praidzone.indexOf(game.global.world);
 		var raidzones = raidzone[praidindex];
 			
 		map = (raidzones - game.global.world - number);
-			
+
 		return map;
 	}
 }
@@ -2107,20 +2077,13 @@ function RAMPplusMapToRun(number) {
 function RAMPshouldrunmap(number) {
 	var go = false;
 	if (Rshoulddopraid) {
-		if (game.global.challengeActive == "Daily") {
-			var praidzone = getPageSetting('RAMPdraidzone');
-			var raidzone = getPageSetting('RAMPdraidraid');
-		} else {
-			var praidzone = getPageSetting('RAMPraidzone');
-			var raidzone = getPageSetting('RAMPraidraid');
-		}
+		var praidzone = game.global.challengeActive == "Daily" ? getPageSetting('RAMPdraidzone') : getPageSetting('RAMPraidzone');
+		var raidzone = game.global.challengeActive == "Daily" ? getPageSetting('RAMPdraidraid') : getPageSetting('RAMPraidraid');
 		var praidindex = praidzone.indexOf(game.global.world);
 		var raidzones = raidzone[praidindex];
 		var actualraidzone = (raidzones - number);
 		
-		if (Rgetequips(actualraidzone, false) > 0) {
-		go = true;
-		}
+		if (Rgetequips(actualraidzone, false) > 0) go = true;
 	}
 	return go;
 }
@@ -2143,7 +2106,7 @@ function RAMPpcheckmap(number) {
 }
 
 function RAMPplusPres(number) {
-	document.getElementById("biomeAdvMapsSelect").value = "Plentiful";
+	document.getElementById("biomeAdvMapsSelect").value = game.global.farmlandsUnlocked ? "Farmlands" : "Plentiful";
 	document.getElementById("advExtraLevelSelect").value = RAMPplusMapToRun(number);
 	document.getElementById("advSpecialSelect").value = "p";
 	document.getElementById("lootAdvMapsRange").value = 0;
@@ -2239,106 +2202,9 @@ function RAMPplusPres(number) {
 	}
 }
 
-function RAMPfragmap() {
-	document.getElementById("biomeAdvMapsSelect").value = "Plentiful";
-	document.getElementById("advExtraLevelSelect").value = 0;
-	document.getElementById("advSpecialSelect").value = "fa";
-	document.getElementById("lootAdvMapsRange").value = 9;
-	document.getElementById("difficultyAdvMapsRange").value = 9;
-	document.getElementById("sizeAdvMapsRange").value = 9;
-	document.getElementById("advPerfectCheckbox").checked = true;
-	document.getElementById("mapLevelInput").value = game.global.world - 1;
-	updateMapCost();
-
-	if (updateMapCost(true) > game.resources.fragments.owned) {
-		document.getElementById("biomeAdvMapsSelect").value = "Random";
-		updateMapCost();
-	}
-	if (updateMapCost(true) > game.resources.fragments.owned) {
-		document.getElementById("advPerfectCheckbox").checked = false;
-		updateMapCost();
-	}
-	if (updateMapCost(true) > game.resources.fragments.owned) {
-		document.getElementById("difficultyAdvMapsRange").value = 8;
-		updateMapCost();
-	}
-	if (updateMapCost(true) > game.resources.fragments.owned) {
-		document.getElementById("sizeAdvMapsRange").value = 8;
-		updateMapCost();
-	}
-	if (updateMapCost(true) > game.resources.fragments.owned) {
-		document.getElementById("difficultyAdvMapsRange").value = 7;
-		updateMapCost();
-	}
-	if (updateMapCost(true) > game.resources.fragments.owned) {
-		document.getElementById("sizeAdvMapsRange").value = 7;
-		updateMapCost();
-	}
-	if (updateMapCost(true) > game.resources.fragments.owned) {
-		document.getElementById("difficultyAdvMapsRange").value = 6;
-		updateMapCost();
-	}
-	if (updateMapCost(true) > game.resources.fragments.owned) {
-		document.getElementById("sizeAdvMapsRange").value = 6;
-		updateMapCost();
-	}
-	if (updateMapCost(true) > game.resources.fragments.owned) {
-		document.getElementById("difficultyAdvMapsRange").value = 5;
-		updateMapCost();
-	}
-	if (updateMapCost(true) > game.resources.fragments.owned) {
-		document.getElementById("sizeAdvMapsRange").value = 5;
-		updateMapCost();
-	}
-	if (updateMapCost(true) > game.resources.fragments.owned) {
-		document.getElementById("difficultyAdvMapsRange").value = 4;
-		updateMapCost();
-	}
-	if (updateMapCost(true) > game.resources.fragments.owned) {
-		document.getElementById("sizeAdvMapsRange").value = 4;
-		updateMapCost();
-	}
-	if (updateMapCost(true) > game.resources.fragments.owned) {
-		document.getElementById("difficultyAdvMapsRange").value = 3;
-		updateMapCost();
-	}
-	if (updateMapCost(true) > game.resources.fragments.owned) {
-		document.getElementById("sizeAdvMapsRange").value = 3;
-		updateMapCost();
-	}
-	if (updateMapCost(true) > game.resources.fragments.owned) {
-		document.getElementById("difficultyAdvMapsRange").value = 2;
-		updateMapCost();
-	}
-	if (updateMapCost(true) > game.resources.fragments.owned) {
-		document.getElementById("sizeAdvMapsRange").value = 2;
-		updateMapCost();
-	}
-	if (updateMapCost(true) > game.resources.fragments.owned) {
-		document.getElementById("difficultyAdvMapsRange").value = 1;
-		updateMapCost();
-	}
-	if (updateMapCost(true) > game.resources.fragments.owned) {
-		document.getElementById("sizeAdvMapsRange").value = 1;
-		updateMapCost();
-	}
-	if (updateMapCost(true) > game.resources.fragments.owned) {
-		document.getElementById("difficultyAdvMapsRange").value = 0;
-		updateMapCost();
-	}
-	if (updateMapCost(true) > game.resources.fragments.owned) {
-		document.getElementById("sizeAdvMapsRange").value = 0;
-		updateMapCost();
-	}
-	if (updateMapCost(true) > game.resources.fragments.owned) {
-		document.getElementById("advSpecialSelect").value = "0";
-		updateMapCost();
-	}
-}
-
 function RAMPplusPresfragmax(number) {
-	document.getElementById("biomeAdvMapsSelect").value = "Plentiful";
-	document.getElementById("advExtraLevelSelect").value = RAMPplusMapToRun(number);
+	document.getElementById("biomeAdvMapsSelect").value = game.global.farmlandsUnlocked ? "Farmlands" : game.global.decayDone ? "Plentiful" : "Mountains";
+	document.getElementById("advExtraLevelSelect").value = RAMPplusMapToRun(number); 
 	document.getElementById("advSpecialSelect").value = "p";
 	document.getElementById("lootAdvMapsRange").value = 9;
 	document.getElementById("difficultyAdvMapsRange").value = 9;
@@ -2350,7 +2216,7 @@ function RAMPplusPresfragmax(number) {
 }
 
 function RAMPplusPresfragmin(number) {
-	document.getElementById("biomeAdvMapsSelect").value = "Plentiful";
+	document.getElementById("biomeAdvMapsSelect").value = game.global.farmlandsUnlocked ? "Farmlands" : game.global.decayDone ? "Plentiful" : "Mountains";
 	document.getElementById("advExtraLevelSelect").value = RAMPplusMapToRun(number);
 	document.getElementById("advSpecialSelect").value = "p";
 	document.getElementById("lootAdvMapsRange").value = 0;
@@ -2551,8 +2417,8 @@ function RAMPfrag() {
 	}
 }
 
-function insanityfragmap() {
-	document.getElementById("biomeAdvMapsSelect").value = "Plentiful";
+function fragmap() {
+	document.getElementById("biomeAdvMapsSelect").value = game.global.farmlandsUnlocked ? "Farmlands" : game.global.decayDone ? "Plentiful" : "Mountains";
 	document.getElementById("advExtraLevelSelect").value = 0;
 	document.getElementById("advSpecialSelect").value = "fa";
 	document.getElementById("lootAdvMapsRange").value = 9;
@@ -2643,13 +2509,13 @@ function insanityfragmap() {
 		updateMapCost();
 	}
 	if (updateMapCost(true) > game.resources.fragments.owned) {
-		document.getElementById("advSpecialSelect").value = "0";
+		document.getElementById("advSpecialSelect").value = 0;
 		updateMapCost();
 	}
 }
 
-function insanityfragmin(number) {
-	document.getElementById("biomeAdvMapsSelect").value = "Plentiful";
+function fragmin(number) {
+	document.getElementById("biomeAdvMapsSelect").value = game.global.farmlandsUnlocked ? "Farmlands" : game.global.decayDone ? "Plentiful" : "Mountains";
 	document.getElementById("advExtraLevelSelect").value = number;
 	document.getElementById("advSpecialSelect").value = "fa";
 	document.getElementById("lootAdvMapsRange").value = 9;
@@ -2658,257 +2524,7 @@ function insanityfragmin(number) {
 	document.getElementById("advPerfectCheckbox").checked = true;
 	document.getElementById("mapLevelInput").value = game.global.world;
 	updateMapCost();
-	if (updateMapCost(true) <= game.resources.fragments.owned) {
-		return updateMapCost(true);
-	}
-	if (updateMapCost(true) > game.resources.fragments.owned) {
-		document.getElementById("biomeAdvMapsSelect").value = "Random";
-		updateMapCost();
-		if (updateMapCost(true) <= game.resources.fragments.owned) {
-			return updateMapCost(true);
-		}
-	}
-	if (updateMapCost(true) > game.resources.fragments.owned) {
-		document.getElementById("advPerfectCheckbox").checked = false;
-		updateMapCost();
-		if (updateMapCost(true) <= game.resources.fragments.owned) {
-			return updateMapCost(true);
-		}
-	}
-	if (updateMapCost(true) > game.resources.fragments.owned) {
-		document.getElementById("advSpecialSelect").value = "0";
-		updateMapCost();
-		if (updateMapCost(true) <= game.resources.fragments.owned) {
-			return updateMapCost(true);
-		}
-	}
-	if (updateMapCost(true) > game.resources.fragments.owned) {
-		document.getElementById("lootAdvMapsRange").value = 8;
-		updateMapCost();
-		if (updateMapCost(true) <= game.resources.fragments.owned) {
-			return updateMapCost(true);
-		}
-	}
-	if (updateMapCost(true) > game.resources.fragments.owned) {
-		document.getElementById("lootAdvMapsRange").value = 7;
-		updateMapCost();
-		if (updateMapCost(true) <= game.resources.fragments.owned) {
-			return updateMapCost(true);
-		}
-	}
-	if (updateMapCost(true) > game.resources.fragments.owned) {
-		document.getElementById("lootAdvMapsRange").value = 6;
-		updateMapCost();
-		if (updateMapCost(true) <= game.resources.fragments.owned) {
-			return updateMapCost(true);
-		}
-	}
-	if (updateMapCost(true) > game.resources.fragments.owned) {
-		document.getElementById("lootAdvMapsRange").value = 5;
-		updateMapCost();
-		if (updateMapCost(true) <= game.resources.fragments.owned) {
-			return updateMapCost(true);
-		}
-	}
-	if (updateMapCost(true) > game.resources.fragments.owned) {
-		document.getElementById("lootAdvMapsRange").value = 4;
-		updateMapCost();
-		if (updateMapCost(true) <= game.resources.fragments.owned) {
-			return updateMapCost(true);
-		}
-	}
-	if (updateMapCost(true) > game.resources.fragments.owned) {
-		document.getElementById("lootAdvMapsRange").value = 3;
-		updateMapCost();
-		if (updateMapCost(true) <= game.resources.fragments.owned) {
-			return updateMapCost(true);
-		}
-	}
-	if (updateMapCost(true) > game.resources.fragments.owned) {
-		document.getElementById("lootAdvMapsRange").value = 2;
-		updateMapCost();
-		if (updateMapCost(true) <= game.resources.fragments.owned) {
-			return updateMapCost(true);
-		}
-	}
-	if (updateMapCost(true) > game.resources.fragments.owned) {
-		document.getElementById("lootAdvMapsRange").value = 1;
-		updateMapCost();
-		if (updateMapCost(true) <= game.resources.fragments.owned) {
-			return updateMapCost(true);
-		}
-	}
-	if (updateMapCost(true) > game.resources.fragments.owned) {
-		document.getElementById("lootAdvMapsRange").value = 0;
-		updateMapCost();
-		if (updateMapCost(true) <= game.resources.fragments.owned) {
-			return updateMapCost(true);
-		}
-	}
-	if (updateMapCost(true) > game.resources.fragments.owned) {
-		document.getElementById("difficultyAdvMapsRange").value = 8;
-		updateMapCost();
-		if (updateMapCost(true) <= game.resources.fragments.owned) {
-			return updateMapCost(true);
-		}
-	}
-	if (updateMapCost(true) > game.resources.fragments.owned) {
-		document.getElementById("sizeAdvMapsRange").value = 8;
-		updateMapCost();
-		if (updateMapCost(true) <= game.resources.fragments.owned) {
-			return updateMapCost(true);
-		}
-	}
-	if (updateMapCost(true) > game.resources.fragments.owned) {
-		document.getElementById("sizeAdvMapsRange").value = 7;
-		updateMapCost();
-		if (updateMapCost(true) <= game.resources.fragments.owned) {
-			return updateMapCost(true);
-		}
-	}
-	if (updateMapCost(true) > game.resources.fragments.owned) {
-		document.getElementById("sizeAdvMapsRange").value = 6;
-		updateMapCost();
-		if (updateMapCost(true) <= game.resources.fragments.owned) {
-			return updateMapCost(true);
-		}
-	}
-	if (updateMapCost(true) > game.resources.fragments.owned) {
-		document.getElementById("sizeAdvMapsRange").value = 5;
-		updateMapCost();
-		if (updateMapCost(true) <= game.resources.fragments.owned) {
-			return updateMapCost(true);
-		}
-	}
-	if (document.getElementById("sizeAdvMapsRange").value == 5) {
-		return updateMapCost(true);
-	}
-}
-
-function insanityfrag() {
-	var cost = 0;
-	if (Rshouldinsanityfarm) {
-		var insanityfarmzone = getPageSetting('Rinsanityfarmzone');
-		var insanityfarmlevel = getPageSetting('Rinsanityfarmlevel');
-		var insanityfarmlevelindex = insanityfarmzone.indexOf(game.global.world);
-		var insanitylevelzones = insanityfarmlevel[insanityfarmlevelindex];
-		
-		if (getPageSetting('Rinsanityfarmfrag') == true) {
-		cost = insanityfragmin(insanitylevelzones);
-		}
-
-		if (game.resources.fragments.owned >= cost) return true;
-		else return false;
-	}
-}
-
-function shipfragmap() {
-	document.getElementById("biomeAdvMapsSelect").value = "Plentiful";
-	document.getElementById("advExtraLevelSelect").value = 0;
-	document.getElementById("advSpecialSelect").value = "fa";
-	document.getElementById("lootAdvMapsRange").value = 9;
-	document.getElementById("difficultyAdvMapsRange").value = 9;
-	document.getElementById("sizeAdvMapsRange").value = 9;
-	document.getElementById("advPerfectCheckbox").checked = true;
-	document.getElementById("mapLevelInput").value = game.global.world;
-	updateMapCost();
-
-	if (updateMapCost(true) > game.resources.fragments.owned) {
-		document.getElementById("biomeAdvMapsSelect").value = "Random";
-		updateMapCost();
-	}
-	if (updateMapCost(true) > game.resources.fragments.owned) {
-		document.getElementById("advPerfectCheckbox").checked = false;
-		updateMapCost();
-	}
-	if (updateMapCost(true) > game.resources.fragments.owned) {
-		document.getElementById("difficultyAdvMapsRange").value = 8;
-		updateMapCost();
-	}
-	if (updateMapCost(true) > game.resources.fragments.owned) {
-		document.getElementById("sizeAdvMapsRange").value = 8;
-		updateMapCost();
-	}
-	if (updateMapCost(true) > game.resources.fragments.owned) {
-		document.getElementById("difficultyAdvMapsRange").value = 7;
-		updateMapCost();
-	}
-	if (updateMapCost(true) > game.resources.fragments.owned) {
-		document.getElementById("sizeAdvMapsRange").value = 7;
-		updateMapCost();
-	}
-	if (updateMapCost(true) > game.resources.fragments.owned) {
-		document.getElementById("difficultyAdvMapsRange").value = 6;
-		updateMapCost();
-	}
-	if (updateMapCost(true) > game.resources.fragments.owned) {
-		document.getElementById("sizeAdvMapsRange").value = 6;
-		updateMapCost();
-	}
-	if (updateMapCost(true) > game.resources.fragments.owned) {
-		document.getElementById("difficultyAdvMapsRange").value = 5;
-		updateMapCost();
-	}
-	if (updateMapCost(true) > game.resources.fragments.owned) {
-		document.getElementById("sizeAdvMapsRange").value = 5;
-		updateMapCost();
-	}
-	if (updateMapCost(true) > game.resources.fragments.owned) {
-		document.getElementById("difficultyAdvMapsRange").value = 4;
-		updateMapCost();
-	}
-	if (updateMapCost(true) > game.resources.fragments.owned) {
-		document.getElementById("sizeAdvMapsRange").value = 4;
-		updateMapCost();
-	}
-	if (updateMapCost(true) > game.resources.fragments.owned) {
-		document.getElementById("difficultyAdvMapsRange").value = 3;
-		updateMapCost();
-	}
-	if (updateMapCost(true) > game.resources.fragments.owned) {
-		document.getElementById("sizeAdvMapsRange").value = 3;
-		updateMapCost();
-	}
-	if (updateMapCost(true) > game.resources.fragments.owned) {
-		document.getElementById("difficultyAdvMapsRange").value = 2;
-		updateMapCost();
-	}
-	if (updateMapCost(true) > game.resources.fragments.owned) {
-		document.getElementById("sizeAdvMapsRange").value = 2;
-		updateMapCost();
-	}
-	if (updateMapCost(true) > game.resources.fragments.owned) {
-		document.getElementById("difficultyAdvMapsRange").value = 1;
-		updateMapCost();
-	}
-	if (updateMapCost(true) > game.resources.fragments.owned) {
-		document.getElementById("sizeAdvMapsRange").value = 1;
-		updateMapCost();
-	}
-	if (updateMapCost(true) > game.resources.fragments.owned) {
-		document.getElementById("difficultyAdvMapsRange").value = 0;
-		updateMapCost();
-	}
-	if (updateMapCost(true) > game.resources.fragments.owned) {
-		document.getElementById("sizeAdvMapsRange").value = 0;
-		updateMapCost();
-	}
-	if (updateMapCost(true) > game.resources.fragments.owned) {
-		document.getElementById("advSpecialSelect").value = "0";
-		updateMapCost();
-	}
-}
-
-function shipfragmin(number) {
-	document.getElementById("biomeAdvMapsSelect").value = "Plentiful";
-	document.getElementById("advExtraLevelSelect").value = number;
-	document.getElementById("advSpecialSelect").value = "lsc";
-	document.getElementById("lootAdvMapsRange").value = 9;
-	document.getElementById("difficultyAdvMapsRange").value = 9;
-	document.getElementById("sizeAdvMapsRange").value = 9;
-	document.getElementById("advPerfectCheckbox").checked = true;
-	document.getElementById("mapLevelInput").value = game.global.world;
-	updateMapCost();
+	
 	if (updateMapCost(true) <= game.resources.fragments.owned) {
 		return updateMapCost(true);
 	}
@@ -3064,23 +2680,84 @@ function shipfragmin(number) {
 	}
 }
 
-function shipfrag() {
+function fragmapcost() {
 	var cost = 0;
 	if (Rshouldshipfarm) {
-		
 		var shipfarmzone = getPageSetting('Rshipfarmzone');
 		var shipfarmlevel = getPageSetting('Rshipfarmlevel');
-
-			var shipfarmlevelindex = shipfarmzone.indexOf(game.global.world);
-			var shiplevelzones = shipfarmlevel[shipfarmlevelindex];
+		var shipfarmlevelindex = shipfarmzone.indexOf(game.global.world);
+		var shiplevelzones = shipfarmlevel[shipfarmlevelindex];
 		
-		if (getPageSetting('Rshipfarmfrag') == true) {
-		cost = shipfragmin(shiplevelzones);
+		if (getPageSetting('Rshipfarmfrag')) {
+			cost = fragmin(shiplevelzones);
 		}
-
-		if (game.resources.fragments.owned >= cost) return true;
-		else return false;
 	}
+	
+	if (Rshouldinsanityfarm) {
+		var insanityfarmzone = getPageSetting('Rinsanityfarmzone');
+		var insanityfarmlevel = getPageSetting('Rinsanityfarmlevel');
+		var insanityfarmlevelindex = insanityfarmzone.indexOf(game.global.world);
+		var insanitylevelzones = insanityfarmlevel[insanityfarmlevelindex];
+		
+		if (getPageSetting('Rinsanityfarmfrag')) cost = fragmin(insanitylevelzones);
+	}
+	
+	if (game.resources.fragments.owned >= cost) return true;
+	else return false;
+}
+
+function PerfectMapCost(pluslevel,special) {
+	maplevel = pluslevel < 0 ? game.global.world + pluslevel : game.global.world;
+	if (!pluslevel || pluslevel < 0) pluslevel = 0;
+	if (!special) special = "fa";
+	document.getElementById("biomeAdvMapsSelect").value = game.global.farmlandsUnlocked && game.global.universe == 2 ? "Farmlands" : game.global.decayDone ? "Plentiful" : "Random";
+	document.getElementById("advExtraLevelSelect").value = pluslevel;
+	document.getElementById("advSpecialSelect").value = special;
+	document.getElementById("lootAdvMapsRange").value = 9;
+	document.getElementById("difficultyAdvMapsRange").value = 9;
+	document.getElementById("sizeAdvMapsRange").value = 9;
+	document.getElementById("advPerfectCheckbox").checked = true;
+	document.getElementById("mapLevelInput").value = maplevel;
+	updateMapCost()
+	return updateMapCost(true);
+}
+
+function RShouldFarmMapCost(pluslevel, special, farmzone, biome) {
+	//Pre-init
+	maplevel = pluslevel < 0 ? game.global.world + pluslevel : game.global.world;
+	if (!pluslevel || pluslevel < 0) pluslevel = 0;
+    if (!special) special = game.global.highestRadonLevelCleared > 83 ? "lmc" : "smc";
+    if (!farmzone) farmzone = [game.global.world];
+    if (!biome) biome = game.global.farmlandsUnlocked && game.global.universe == 2 ? "Farmlands" : game.global.decayDone ? "Plentiful" : "Mountains";
+
+	//Working out appropriate map settings
+	if (farmzone.includes(game.global.world)) {
+			document.getElementById("mapLevelInput").value = maplevel;
+			document.getElementById("advExtraLevelSelect").value = pluslevel;
+			document.getElementById("biomeAdvMapsSelect").value = biome;
+			document.getElementById("advSpecialSelect").value = special;
+	}
+	updateMapCost();
+}
+
+function RShouldFarmMapCreation(pluslevel,special,biome) {
+    //Pre-Init
+    if (!pluslevel) pluslevel = 0;
+    if (!special) special = game.global.highestRadonLevelCleared > 83 ? "lmc" : "smc";
+    if (!biome) biome = game.global.farmlandsUnlocked && game.global.universe == 2 ? "Farmlands" : game.global.decayDone ? "Plentiful" : "Mountains";
+	var create=false;
+
+	for (var mapping in game.global.mapsOwnedArray) {
+		if (!game.global.mapsOwnedArray[mapping].noRecycle && ((game.global.world + pluslevel) == game.global.mapsOwnedArray[mapping].level) && game.global.mapsOwnedArray[mapping].bonus == special && game.global.mapsOwnedArray[mapping].location == biome) {
+			return(game.global.mapsOwnedArray[mapping].id);
+			break;
+		} else {
+				create=true;
+		}
+	}
+	if (create) {
+		return("create");
+	}		
 }
 
 var fastimps =
@@ -3154,4 +2831,108 @@ function Rmanageequality() {
 			}
 		}
 	}
+}
+
+function simpleSecondsLocal(what, seconds) {
+	//Come home to the impossible flavour of balanced resource gain. Come home, to simple seconds.
+		var compatible = ["Farmer", "Lumberjack", "Miner", "Dragimp", "Explorer"];
+		var jobName;
+		switch (what) {
+			case "food":
+				jobName = "Farmer";
+				break;
+			case "wood":
+				jobName = "Lumberjack";
+				break;
+			case "metal":
+				jobName = "Miner";
+				break;
+			case "gems":
+				jobName = "Dragimp";
+				break;
+			case "fragments":
+				jobName = "Explorer";
+				break;
+			case "science":
+				jobName = "Scientist";
+				break;
+		}
+		var job = game.jobs.Miner;
+		var amt_local = job.owned * job.modifier * seconds;
+		amt_local += (amt_local * getPerkLevel("Motivation") * game.portal.Motivation.modifier);
+		if (getPerkLevel("Motivation_II") > 0) amt_local *= (1 + (getPerkLevel("Motivation_II") * game.portal.Motivation_II.modifier));
+		if (what != "science" && what != "fragments"){
+			if (game.global.challengeActive == "Alchemy") amt_local *= alchObj.getPotionEffect("Potion of Finding");
+			amt_local *= alchObj.getPotionEffect("Elixir of Finding");
+		}
+		if (game.global.pandCompletions && game.global.universe == 2 && what != "fragments") amt_local *= game.challenges.Pandemonium.getTrimpMult();
+		if (getPerkLevel("Observation") > 0 && game.portal.Observation.trinkets > 0) amt_local *= game.portal.Observation.getMult();
+		if (getPerkLevel("Meditation") > 0) amt_local *= (1 + (game.portal.Meditation.getBonusPercent() * 0.01));
+		if (what == "food" || what == "wood" || what == "metal"){
+			amt_local *= getParityBonus(game.global.StaffEquipped);
+			if (autoBattle.oneTimers.Gathermate.owned) amt_local *= autoBattle.oneTimers.Gathermate.getMult();
+		}
+		if ((what == "food" && game.buildings.Antenna.owned >= 5) || (what == "metal" && game.buildings.Antenna.owned >= 15)) amt_local *= game.jobs.Meteorologist.getExtraMult();
+		if (Fluffy.isRewardActive('gatherer')) amt_local *= 2;
+		if (game.jobs.Magmamancer.owned > 0 && what == "metal") amt_local *= game.jobs.Magmamancer.getBonusPercent();
+		if (game.global.challengeActive == "Meditate") amt_local *= 1.25;
+		else if (game.global.challengeActive == "Size") amt_local *= 1.5;
+		if (game.global.challengeActive == "Toxicity"){
+			var toxMult = (game.challenges.Toxicity.lootMult * game.challenges.Toxicity.stacks) / 100;
+			amt_local *= (1 + toxMult);
+		}
+		if (game.global.challengeActive == "Watch") amt_local /= 2;
+		if (game.global.challengeActive == "Lead" && ((game.global.world % 2) == 1)) amt_local *= 2;
+		if (game.global.challengeActive == "Balance"){
+			amt_local *= game.challenges.Balance.getGatherMult();
+		}
+		if (game.global.challengeActive == "Unbalance"){
+			amt_local *= game.challenges.Unbalance.getGatherMult();
+		}
+		if (game.global.challengeActive == "Daily"){
+			if (typeof game.global.dailyChallenge.famine !== 'undefined' && what != "fragments" && what != "science"){
+				amt_local *= dailyModifiers.famine.getMult(game.global.dailyChallenge.famine.strength);
+			}
+			if (typeof game.global.dailyChallenge.dedication !== 'undefined'){
+				amt_local *= dailyModifiers.dedication.getMult(game.global.dailyChallenge.dedication.strength);
+			}
+		}
+		if (game.global.challengeActive == "Decay" || game.global.challengeActive == "Melt"){
+			var challenge = game.challenges[game.global.challengeActive];
+			amt_local *= 10;
+			amt_local *= Math.pow(challenge.decayValue, challenge.stacks);
+		}
+		if (game.challenges.Nurture.boostsActive()) amt_local *= game.challenges.Nurture.getResourceBoost();
+		if (getEmpowerment() == "Wind"){
+			amt_local *= (1 + (game.empowerments.Wind.getCombatModifier()));
+		}
+		amt_local = calcHeirloomBonus("Staff", jobName + "Speed", amt_local);
+		if (game.global.playerGathering == what){
+			if ((game.talents.turkimp2.purchased || game.global.turkimpTimer > 0) && (what == "food" || what == "metal" || what == "wood")){
+				var tBonus = 1.5;
+				if (game.talents.turkimp2.purchased) tBonus = 2;
+				else if (game.talents.turkimp2.purchased) tBonus = 1.75;
+				amt_local *= tBonus;
+			}
+			amt_local += getPlayerModifier() * seconds;
+		}
+		return amt_local;
+}
+
+function scaleToCurrentMapLocal(amt_local, ignoreBonuses, ignoreScry) {
+    var map = game.global.challengeActive == "Pandemonium" ? game.global.world-1 : game.global.world;
+	var compare = game.global.world;
+		if (game.talents.mapLoot.purchased)
+			compare--;
+		if (map < compare){
+			//-20% loot compounding for each level below world
+			amt_local *= Math.pow(0.8, (compare - world));
+		}
+
+	var maploot = game.global.farmlandsUnlocked ? 3.6 : game.global.decayDone ? 2.85 : 2.6;
+	//Add map loot bonus
+	amt_local = Math.round(amt_local * maploot);
+	if (ignoreBonuses) return amt_local;
+	amt_local = scaleLootBonuses(amt_local, ignoreScry);
+	return amt_local;
 }
