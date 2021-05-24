@@ -999,7 +999,7 @@ function RautoEquip() {
 			    buyEquipment(equip, null, true, 1);
             }
 		}
-	} 
+	}
 
     // Loop through actually getting equips
     var keepBuying = false;

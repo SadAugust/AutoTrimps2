@@ -183,13 +183,14 @@ function RmanualLabor2() {
 	}
 	var rspecial = '?';
 	if ((Rshouldtimefarm || Rshouldalchfarm) && game.global.mapsActive) {
-		if (Rshouldalchfarm) {
-			rspecial = autoTrimpSettings.RAlchSpecial.selected;
-		} else if (game.global.challengeActive == "Daily" && Rshouldtimefarm && getPageSetting(Rdtimefarm)) {
-			rspecial = autoTrimpSettings.Rdtimespecialselection.selected;
-		} else if (Rshouldtimefarm) {
+		if (Rshouldalchfarm) 
+            rspecial = autoTrimpSettings.RAlchSpecial.selected;
+        else if (Rshouldtimefarm && getPageSetting('Rc3timefarm') && (game.global.runningChallengeSquared || game.global.challengeActive == 'Mayhem' || game.global.challengeActive == 'Pandemonium'))
+            rspecial = autoTrimpSettings.Rc3timespecialselection.selected
+		else if (game.global.challengeAcive = "Daily" && Rshouldtimefarm && getPageSetting('Rdtimefarm')) 
+            rspecial = autoTrimpSettings.Rdtimespecialselection.selected;
+		else if (Rshouldtimefarm)
 			rspecial = autoTrimpSettings.Rtimespecialselection.selected;
-		}
 	}
 	
 	if ((game.global.challengeActive == "Quest" && questcheck() == 1) || Rshouldshipfarm || Rshouldtributefarm || ((Rshouldtimefarm || Rshouldalchfarm) && (rspecial.includes('sc') || rspecial.includes('hc')))) {

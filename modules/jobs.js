@@ -544,27 +544,27 @@ function RbuyJobs() {
 
 	// If focused farming go all in for caches
 	var allIn = "";
-
 	if ((Rshouldtimefarm || Rshouldalchfarm) && game.global.mapsActive) {
-		if (Rshouldalchfarm) {
-			rspecial = autoTrimpSettings.RAlchSpecial.selected;
-		} else if (game.global.challengeAcive = "Daily" && Rshouldtimefarm && getPageSetting(Rdtimefarm)) {
-			rspecial = autoTrimpSettings.Rdtimespecialselection.selected;
-		} else if (Rshouldtimefarm) {
+		if (Rshouldalchfarm) 
+            rspecial = autoTrimpSettings.RAlchSpecial.selected;
+        else if (Rshouldtimefarm && getPageSetting('Rc3timefarm') && (game.global.runningChallengeSquared || game.global.challengeActive == 'Mayhem' || game.global.challengeActive == 'Pandemonium'))
+            rspecial = autoTrimpSettings.Rc3timespecialselection.selected
+		else if (game.global.challengeAcive = "Daily" && Rshouldtimefarm && getPageSetting('Rdtimefarm')) 
+            rspecial = autoTrimpSettings.Rdtimespecialselection.selected;
+		else if (Rshouldtimefarm)
 			rspecial = autoTrimpSettings.Rtimespecialselection.selected;
-		}
 		
-		if (rspecial.includes('mc')) {
-			allIn = "Miner";
-		} else if (rspecial.includes('sc')) {
-			allIn = "Farmer";
-		} else if (rspecial.includes('wc')) {
-			allIn = "Lumberjack";
-		} else if (rspecial.includes('rc')) {
-			allIn = "Scientist";
-		} else if (rspecial.includes('hc')) {
+		if (rspecial.includes('mc')) 
+            allIn = "Miner";
+		else if (rspecial.includes('sc')) 
+            allIn = "Farmer";
+		else if (rspecial.includes('wc')) 
+            allIn = "Lumberjack";
+		else if (rspecial.includes('rc')) 
+            allIn = "Scientist";
+        else if (rspecial.includes('hc')) {
 			allIn = "Farmer"
-			var desiredRatios = [100,100,100,0];
+			var desiredRatios = [100,80,50,0.01];
 		}
 	} 
 	

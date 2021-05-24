@@ -2380,14 +2380,8 @@ function RAMPplusPresfragmin(number) {
 function RAMPfrag() {
 	var cost = 0;
 	if (Rshoulddopraid) {
-		if (game.global.challengeActive == "Daily") {
-			var praidzone = getPageSetting('RAMPdraidzone');
-			var raidzone = getPageSetting('RAMPdraidraid');
-		} else {
-			var praidzone = getPageSetting('RAMPraidzone');
-			var raidzone = getPageSetting('RAMPraidraid');
-		}
-
+		var praidzone = game.global.challengeActive == "Daily" ? getPageSetting('RAMPdraidzone') : getPageSetting('RAMPraidzone');
+		var raidzone = game.global.challengeActive == "Daily" ? getPageSetting('RAMPdraidraid') : getPageSetting('RAMPraidraid');
 		var praidindex = praidzone.indexOf(game.global.world);
 		var raidzones = raidzone[praidindex];
 
@@ -2706,6 +2700,48 @@ function fragmapcost() {
 	else return false;
 }
 
+function PerfectMapLevel(special) {
+
+	var mult = 1;
+	mult *= game.global.challengeActive == 'Unbalance' ? 1.5 : 1;
+	mult *= game.global.challengeActive == 'Wither' && game.challenges.Wither.enemyStacks > 0 ? game.challenges.Wither.getEnemyAttackMult() : 1;
+	mult *= game.global.challengeActive == 'Archaeology' ? game.challenges.Archaeology.getStatMult('enemyAttack') : 1;
+	mult *= game.global.challengeActive == 'Mayhem' ? game.challenges.Mayhem.getEnemyMult(): 1;
+	mult *= game.global.challengeActive == 'Mayhem' ? game.challenges.Mayhem.getBossMult() : 1;
+	mult *= game.global.challengeActive == 'Storm' ? game.challenges.Storm.getAttackMult() : 1;
+	mult *= game.global.challengeActive == 'Berserk' ? 1.5 : 1;
+	mult *= game.global.challengeActive == 'Exterminate' ? game.challenges.Exterminate.getSwarmMult() : 1;
+	mult *= game.global.challengeActive == 'Nurture' ? 2 : 1;
+	mult *= game.global.challengeActive == 'Nurture' && game.buildings.Laboratory.owned > 0 ? game.buildings.Laboratory.getEnemyMult() : 1;
+	mult *= game.global.challengeActive == 'Pandemonium' ? game.challenges.Pandemonium.getPandMult() : 1;
+	mult *= game.global.challengeActive == 'Alchemy' ? ((alchObj.getEnemyStats(false, false)) + 1) : 1;
+
+	multpanda = game.global.challengeActive == 'Pandemonium' ? game.challenges.Pandemonium.getBossMult() : 1;
+
+	gammaburstmult = getPageSetting('RPandemoniumHits') < 5 && (RcalcOurHealth() / (RcalcBadGuyDmg(null, RgetEnemyMaxAttack(game.global.world, 20, 'Snimp', 1)) * 1.125)) >= 5 ? (1 + (getHeirloomBonus("Shield", "gammaBurst")) / 500) : 1;
+	hitsmap = getPageSetting('RPandemoniumHits') > 0 ? getPageSetting('RPandemoniumHits') : 10;
+	hitssurv = getPageSetting('RPandemoniumHits') < 5 ? getPageSetting('RPandemoniumHits') : 5;
+	go = false;
+	for (var i = 10; 0 < i; i--) {
+		if (!go) {
+			pluslevels = i;	
+			var bm2 = pluslevels > 0 ? 1.5 : 1;
+			if ((game.resources.fragments.owned >= PerfectMapCost(pluslevels,special)) && ((RcalcEnemyBaseHealth("map",game.global.world + pluslevels,20,'Turtlimp') * mult * 0.75) <= ((RcalcOurDmg("avg", false, true) / gammaburstmult) * bm2 * hitsmap))
+			&& ((((((RcalcBadGuyDmg(null, RgetEnemyMaxAttack((game.global.world + pluslevels), 20, 'Snimp', 1)) * 1.125) / multpanda) * mult) * (hitssurv)) <= (RcalcOurHealth() * 2)))) {
+				go = true;
+				return i;
+			}
+		}
+		if (!go && i == 0) {
+			pluslevels = -1;
+			if (game.global.challengeActive == 'Pandemonium') pluslevels = 1;
+			go = true;
+			return i;
+		}
+	}
+
+}
+
 function PerfectMapCost(pluslevel,special) {
 	maplevel = pluslevel < 0 ? game.global.world + pluslevel : game.global.world;
 	if (!pluslevel || pluslevel < 0) pluslevel = 0;
@@ -2718,7 +2754,7 @@ function PerfectMapCost(pluslevel,special) {
 	document.getElementById("sizeAdvMapsRange").value = 9;
 	document.getElementById("advPerfectCheckbox").checked = true;
 	document.getElementById("mapLevelInput").value = maplevel;
-	updateMapCost()
+	updateMapCost();
 	return updateMapCost(true);
 }
 
@@ -2738,6 +2774,7 @@ function RShouldFarmMapCost(pluslevel, special, farmzone, biome) {
 			document.getElementById("advSpecialSelect").value = special;
 	}
 	updateMapCost();
+	return updateMapCost(true);
 }
 
 function RShouldFarmMapCreation(pluslevel,special,biome) {
@@ -2812,7 +2849,7 @@ function Rmanageequality() {
 				manageEqualityStacks();
 				updateEqualityScaling();
 			}
-		} 
+		}
 	}
 
 	else if (game.global.challengeActive == "Exterminate" && getPageSetting('Rexterminateon') == true && getPageSetting('Rexterminateeq') == true && !game.global.mapsActive) {

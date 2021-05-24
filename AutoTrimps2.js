@@ -11,7 +11,7 @@ function initializeAutoTrimps() {
 	for (var m in ATmoduleList) {
 		ATscriptLoad(modulepath, ATmoduleList[m]);
 	}
-	debug('AutoTrimps - SadAugust Fork Loaded!', '*spinner3');
+	debug('AutoTrimps Loaded!');
 }
 
 var runInterval = 100;
@@ -266,8 +266,10 @@ function mainLoop() {
 		if (Ragu && Ragu != 'Off') RautoGoldenUpgradesAT(Ragu);
 
 		//Bone Upgrades
-		if ((getPageSetting('c3GM_ST') == 1 || getPageSetting('c3GM_ST') == 3) && !game.singleRunBonuses.goldMaps.owned && game.global.b >=20) purchaseSingleRunBonus('goldMaps');
-		if ((getPageSetting('c3GM_ST') == 2 || getPageSetting('c3GM_ST') == 3)  && !game.singleRunBonuses.sharpTrimps.owned && game.global.b >=25) purchaseSingleRunBonus('sharpTrimps');
+		if (game.global.runningChallengeSquared || game.global.challengeActive == 'Mayhem' || game.global.challengeActive == 'Pandemonium') {
+			if ((getPageSetting('c3GM_ST') == 1 || getPageSetting('c3GM_ST') == 3) && !game.singleRunBonuses.goldMaps.owned && game.global.b >=20) purchaseSingleRunBonus('goldMaps');
+			if ((getPageSetting('c3GM_ST') == 2 || getPageSetting('c3GM_ST') == 3)  && !game.singleRunBonuses.sharpTrimps.owned && game.global.b >=25) purchaseSingleRunBonus('sharpTrimps');
+		}
 	}
 }
 
@@ -286,8 +288,10 @@ function mainCleanup() {
 	if (game.global.universe == 2 && currentworld == 1 && aWholeNewWorld) {
 		lastRadonZone = 0;
 		zonePostpone = 0;
-		if (getPageSetting('Rautomapsportal') && getPageSetting('RAutoMaps') == 0 && !game.upgrades.Battle.done)
+		if (getPageSetting('Rautomapsportal') && getPageSetting('RAutoMaps') == 0 && !game.upgrades.Battle.done) {
 			autoTrimpSettings["RAutoMaps"].value = 1;
+			if (getPageSetting('Rshowautomapstatus')) RupdateAutoMapsStatus();
+		}
 		return true;
 	}
 }

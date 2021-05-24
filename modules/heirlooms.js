@@ -291,7 +291,7 @@ function Rheirloomswap() {
 	
     //Swapping Shields
 	if (getPageSetting('Rhsshield')) {
-		if ((game.global.challengeActive == "Mayhem" || game.global.challengeActive == "Pandemonium") && getPageSetting('Rhsmayhem') != "undefined") {
+		if ((game.global.runningChallengeSquared || game.global.challengeActive == "Mayhem" || game.global.challengeActive == "Pandemonium") && getPageSetting('Rhsmayhem') != "undefined") {
 			Rhshmayhemequip();
 		} else if (getPageSetting('Rhshzone') > 0) {
 			if (getPageSetting('Rhslowvmdc') !== "undefined" && game.global.world < getPageSetting('Rhshzone')) {

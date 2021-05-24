@@ -1,4 +1,4 @@
-# AutoTrimps - SadAugust Fork 
+# AutoTrimps - SadAugust Fork
 
 ## Current Version - Ongoing Development!
 - SadAugust Fork. All changes made by SadAugust using GenBTC as base. Currently up-to-date as of 03/2021.
